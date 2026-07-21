@@ -96,7 +96,7 @@ else {
     uint32_t current_time = Get_SysTime_ms();
 	// 拨弹电机
 	//根据模式选择速度
-	switch (Global.Shoot.tigger_mode)
+	switch (Global.Shoot.trigger_mode)
 	{
 	case HIGH:
 		Shoot.trigger_speed_set = TRIGGER_SPEED_HIGH;
@@ -154,7 +154,7 @@ void Shoot_Calculater()
 	}
 	else
 	{
-        if(Global.Shoot.tigger_mode == SINGLE)
+        if(Global.Shoot.trigger_mode == SINGLE)
 	    {
 		    float speed_set_from_pos = PID_Cal(&Shoot.trigger_location_pid,(float)Shoot.trigger_angle_now,(float)trigger_angle_target);
 		    Shoot.trigger_speed_set = speed_set_from_pos;

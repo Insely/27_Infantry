@@ -179,7 +179,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
     {
       hipnuc_input(&IMU_HI_GIMBAL_data, UART8_data.rev_data[i]);
     } */
-    DM_IMU_RS485_Decode(UART8_data.rev_data, Size);
     // 重新启动DMA接收
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART8_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT); // 关闭半传输中断

@@ -36,4 +36,10 @@ extern float normalize_angle(float angle);
 //数据类型转换
 extern int float_to_uint(float x_float, float x_min, float x_max, int bits) ;
 extern float uint_to_float(int x_int, float x_min, float x_max, int bits);
+void float_to_bytes(float f, uint8_t *bytes);
+float bytes_to_float(uint8_t *bytes);
+void uint16_to_bytes(uint16_t value, uint8_t *bytes);
+uint16_t bytes_to_uint16(uint8_t *bytes);
+void uint8_to_bytes(uint8_t value, uint8_t *bytes);
+uint8_t bytes_to_uint8(uint8_t *bytes);
 #endif // !__USER_MATH__

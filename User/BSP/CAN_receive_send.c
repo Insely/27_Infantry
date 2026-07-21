@@ -13,13 +13,12 @@
 #include "motor.h"
 #include "canopen_parser.h"
 #include "supercup.h"
+#include "Receive_Gimbal.h"
 
 // CAN寄存器及控制器
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3; // 定义原型在fdcan.c文件
-
-
 
 /**
  * @brief 获取指定CAN总线的句柄
@@ -125,13 +124,13 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
   if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
   {
     HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header, rx_data);
+    if (hfdcan == &hfdcan2 && Gimbal_CAN_Dispatch(rx_header.Identifier, rx_data))
+      return;
     // 超电帧
-
-
     if ((rx_header.Identifier == Supercap_receive_id) ||
         (rx_header.Identifier == Supercap_chassis_power_id))
       Supercup_DecodeCandata(hfdcan, rx_data,rx_header.Identifier);
-    //IMU帧
+    // 云台帧
     
     // 电机帧
     DJIMotor_DecodeCandata(hfdcan, rx_header.Identifier, rx_data);

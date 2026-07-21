@@ -140,3 +140,52 @@ float uint_to_float(int x_int, float x_min, float x_max, int bits)
     float offset = x_min;
     return ((float)x_int) * span / ((float)((1 << bits) - 1)) + offset;
 }
+
+// 将float按字节拆分
+void float_to_bytes(float f, uint8_t *bytes) 
+	{
+    uint32_t *p = (uint32_t *)&f;  // 将float指针强制转换为uint32_t指针
+    uint32_t temp = *p;            // 获取float的二进制表示
+    bytes[0] = (temp >> 0) & 0xFF; // 提取最低字节
+    bytes[1] = (temp >> 8) & 0xFF; // 提取第二个字节
+    bytes[2] = (temp >> 16) & 0xFF; // 提取第三个字节
+    bytes[3] = (temp >> 24) & 0xFF; // 提取最高字节
+  }
+
+// 将字节数组转换为float
+float bytes_to_float(uint8_t *bytes) 
+	 {
+	 uint32_t temp = 0;
+	 temp |= (bytes[0] << 0);  // 最低字节
+	 temp |= (bytes[1] << 8);  // 第二个字节
+	 temp |= (bytes[2] << 16); // 第三个字节
+	 temp |= (bytes[3] << 24); // 最高字节
+	 return *(float *)&temp;   // 将uint32_t指针强制转换为float指针
+	 }
+
+// 将uint16_t按字节拆分
+void uint16_to_bytes(uint16_t value, uint8_t *bytes) 
+{
+    bytes[0] = (value >> 0) & 0xFF; // 低位字节
+    bytes[1] = (value >> 8) & 0xFF; // 高位字节
+}
+
+// 将字节数组转换为uint16_t
+uint16_t bytes_to_uint16(uint8_t *bytes) 
+{
+    uint16_t temp = 0;
+    temp |= ((uint16_t)bytes[0] << 0);
+    temp |= ((uint16_t)bytes[1] << 8);
+    return temp;
+}
+// 将uint8_t按字节拆分（其实就是赋值）
+void uint8_to_bytes(uint8_t value, uint8_t *bytes) 
+{
+    bytes[0] = value;
+}
+
+// 将字节数组转换为uint8_t
+uint8_t bytes_to_uint8(uint8_t *bytes) 
+{
+    return bytes[0];
+}

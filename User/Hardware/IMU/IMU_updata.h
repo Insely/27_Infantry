@@ -56,7 +56,6 @@ struct IMU_t
 extern struct IMU_t IMU_data;
 extern struct IMU_t IMU_data_history[10]; // IMU历史数据结构体
 extern hipnuc_raw_t IMU_HI_GIMBAL_data;
-extern dm_imu_t dm_imu_data;
 extern unsigned  long ulTdleCycleCount;	
 
 
