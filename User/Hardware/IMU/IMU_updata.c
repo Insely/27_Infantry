@@ -47,8 +47,8 @@ struct IMU_t IMU_data;			   // IMU数据结构体
 struct IMU_t IMU_data_history[10]; // IMU历史数据结构体
 
 hipnuc_raw_t IMU_HI_GIMBAL_data;
-dm_imu_t dm_imu_data;
-
+//dm_imu_t dm_imu_data;
+imu_t imu_data;
 // 内部调用
 void IMU_HeatSet(uint16_t ccr); // 加热电阻PWM占空比
 void shiftArray(float arr[], int size);

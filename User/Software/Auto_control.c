@@ -31,14 +31,14 @@ void STM32_to_MINIPC()
     toMINIPC.header[0] = 'S';
     toMINIPC.header[1] = 'P';
     toMINIPC.mode = MODE_AUTO_AIM;
-    toMINIPC.yaw = degree2rad(dm_imu_data.yaw);//IMU_data.AHRS.yaw;
-    toMINIPC.pitch = degree2rad(-dm_imu_data.pitch);//IMU_data.AHRS.pitch;
-    toMINIPC.yaw_vel = (cos(dm_imu_data.pitch * DEG_TO_RAD) * dm_imu_data.gyro[2] - sin(dm_imu_data.pitch * DEG_TO_RAD) * dm_imu_data.gyro[0]);//IMU_data.gyro[2];
-    toMINIPC.pitch_vel = -dm_imu_data.gyro[1]; //IMU_data.gyro[0];
-    toMINIPC.q[0] = dm_imu_data.quaternion[0];//IMU_data.AHRS.q[0];
-    toMINIPC.q[1] = dm_imu_data.quaternion[1];//IMU_data.AHRS.q[1];
-    toMINIPC.q[2] = dm_imu_data.quaternion[2];//IMU_data.AHRS.q[2];
-    toMINIPC.q[3] = dm_imu_data.quaternion[3];//IMU_data.AHRS.q[3];
+    toMINIPC.yaw = degree2rad(imu_data.yaw);//IMU_data.AHRS.yaw;
+    toMINIPC.pitch = degree2rad(-imu_data.pitch);//IMU_data.AHRS.pitch;
+    toMINIPC.yaw_vel = (cos(imu_data.pitch * DEG_TO_RAD) * imu_data.gyro[2] - sin(imu_data.pitch * DEG_TO_RAD) * imu_data.gyro[0]);//IMU_data.gyro[2];
+    toMINIPC.pitch_vel = -imu_data.gyro[1]; //IMU_data.gyro[0];
+    toMINIPC.q[0] = imu_data.q[0];//IMU_data.AHRS.q[0];
+    toMINIPC.q[1] = imu_data.q[1];//IMU_data.AHRS.q[1];
+    toMINIPC.q[2] = imu_data.q[2];//IMU_data.AHRS.q[2];
+    toMINIPC.q[3] = imu_data.q[3];//IMU_data.AHRS.q[3];
     toMINIPC.bullet_speed = Referee_data.Initial_SPEED;
     toMINIPC.bullet_count = Referee_data.Launching_Frequency;
     int len = (uint8_t *)&toMINIPC.crc16 - (uint8_t *)&toMINIPC;
@@ -85,7 +85,7 @@ void MINIPC_to_STM32(void)
 
         if (!is_zero_frame)
         {
-            yaw_error = rad2degree(fromMINIPC.yaw) - dm_imu_data.yaw;
+            yaw_error = rad2degree(fromMINIPC.yaw) - imu_data.yaw;
             if (yaw_error > 180.0f)  yaw_error -= 360.0f;
             if (yaw_error < -180.0f) yaw_error += 360.0f;
         // 锁定收到数据这一刻的绝对目标位置，后续Auto_Control直接使用，不再每周期叠加

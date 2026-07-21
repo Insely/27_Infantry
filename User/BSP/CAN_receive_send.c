@@ -13,6 +13,7 @@
 #include "motor.h"
 #include "canopen_parser.h"
 #include "supercup.h"
+#include "dm_imu.h"
 
 // CAN¼Ä´æÆ÷¼°¿ØÖÆÆ÷
 extern FDCAN_HandleTypeDef hfdcan1;
@@ -132,7 +133,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         (rx_header.Identifier == Supercap_chassis_power_id))
       Supercup_DecodeCandata(hfdcan, rx_data,rx_header.Identifier);
     //IMUÖ¡
-    
+    if(hfdcan == dm_imu_gimbal.can_handle && rx_header.Identifier == dm_imu_gimbal.mst_id)
+    IMU_UpdateData(rx_data, &dm_imu_gimbal);
     // µç»úÖ¡
     DJIMotor_DecodeCandata(hfdcan, rx_header.Identifier, rx_data);
     DMMotor_DecodeCandata(hfdcan, rx_header.Identifier, rx_data);

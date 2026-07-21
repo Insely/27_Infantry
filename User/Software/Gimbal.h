@@ -12,8 +12,8 @@
 #define GIMBALMotor_init(type, id)                        DMMotor_Init(type, id) 
 #define GIMBALMotor_set(id,pos, vel, tor, kp, kd)         DMMotor_Set(id, pos, vel, tor, kp, kd)
 #define GIMBALMotor_get_data(id)                          DMMotor_GetData(id)
-#define GIMBAL_IMU_DATA  dm_imu_data
-
+//#define GIMBAL_IMU_DATA  dm_imu_data
+#define GIMBAL_IMU_DATA  imu_data
 /*电机参数*/
 #define GIMBALMOTOR_MAX_CURRENT MAX_CURRENT
 

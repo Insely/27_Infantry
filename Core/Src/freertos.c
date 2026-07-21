@@ -407,15 +407,15 @@ void Referee_Task(void *argument)
 void Log_and_debug_Task(void *argument)
 {
   /* USER CODE BEGIN Log_and_debug_Task */
+
+  /* Infinite loop */
+  for(;;)
+  {
   LED_ShowColor(RED);
   osDelay(500);
   LED_ShowColor(BLUE);
   osDelay(500);
   LED_ShowColor(GREEN);
-  /* Infinite loop */
-  for(;;)
-  {
-
   }
   /* USER CODE END Log_and_debug_Task */
 }
