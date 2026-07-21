@@ -142,6 +142,9 @@ typedef struct
 
 	float cur_temp;
 
+	float last_yaw;
+	float yaw_cnt;
+
     uint32_t request_cnt;
 
 

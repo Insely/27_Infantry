@@ -78,13 +78,13 @@ typedef struct
     /*∑¢…‰ª˙ππ◊¥Ã¨*/
     struct
     {
-        enum tigger_mode_e
+        enum trigger_mode_e
         {
             TRIGGER_CLOSE,
             HIGH,
             SINGLE,
             DEBUG_TRIGGER, // ÕÀµØ π”√£¨µÕ…‰ÀŸ∏ﬂ…‰∆µ°£
-        } tigger_mode;
+        } trigger_mode;
          struct
         {
             float speed_set;
@@ -115,11 +115,11 @@ typedef struct
             Glass_open,
         } glass_mode;
         
-        enum ONtigger_e
+        enum ONtrigger_e
         {
-            tigger_close,// ≤¶µØ≈Ã–π¡¶
-            tigger_open,
-        } ONtigger;
+            trigger_close,// ≤¶µØ≈Ã–π¡¶
+            trigger_open,
+        } ONtrigger;
         struct
         {
             float pitch_angle;

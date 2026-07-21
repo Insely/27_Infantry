@@ -240,7 +240,7 @@ void RC_Controller()
         Chassis_SetX(0);
         Chassis_SetY(0);
         Global.Shoot.shoot_mode = CLOSE;
-        Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+        Global.Shoot.trigger_mode = TRIGGER_CLOSE;
         return;
     }
 #endif
@@ -299,22 +299,22 @@ void RC_Controller()
         Global.Shoot.shoot_mode = CLOSE;
     if (RC_data.rc.ch[4] >= 300 &&RC_data.rc.ch[4] <= 660 &&Global.Shoot.shoot_mode != CLOSE &&
         (Global.Auto.mode == NONE ||Global.Auto.input.control_mode == 2)) // 滚轮最下头，高速发弹，若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = HIGH;
+        Global.Shoot.trigger_mode = HIGH;
     /*else if (RC_data.rc.ch[4] >= 50 &&RC_data.rc.ch[4] <= 300 &&Global.Shoot.shoot_mode != CLOSE &&
              (Global.Auto.mode == NONE ||Global.Auto.input.fire == 1)) // 滚轮中部，低速发弹,若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = LOW;*/
+        Global.Shoot.trigger_mode = LOW;*/
     else if (RC_data.rc.ch[4] > 660 &&Global.Shoot.shoot_mode != CLOSE)
     {
         Global.Shoot.shoot_mode = DEBUG_SHOOT;
-        Global.Shoot.tigger_mode = DEBUG_SHOOT;
+        Global.Shoot.trigger_mode = DEBUG_SHOOT;
     }
     else if(RC_data.rc.ch[4]<=-300 &&RC_data.rc.ch[4]>=-660 &&Global.Shoot.shoot_mode != CLOSE &&
        (Global.Auto.mode == NONE || Global.Auto.input.control_mode == 2))
     {
-        Global.Shoot.tigger_mode = SINGLE;
+        Global.Shoot.trigger_mode = SINGLE;
     }
     else
-        Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+        Global.Shoot.trigger_mode = TRIGGER_CLOSE;
 }
 
 /*----------------------------------- 键鼠控制逻辑 --------------------------------------*/
@@ -439,10 +439,10 @@ void Keyboard_MouseController(void)
          Global.Auto.input.control_mode == 2 ||
          Global.Auto.input.control_mode == 0)) // 拨弹电机控制
     {
-       Global.Shoot.tigger_mode = HIGH;
+       Global.Shoot.trigger_mode = HIGH;
     }
     else
-        Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+        Global.Shoot.trigger_mode = TRIGGER_CLOSE;
 }
 
 

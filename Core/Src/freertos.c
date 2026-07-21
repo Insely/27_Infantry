@@ -42,6 +42,7 @@
 #include "motor.h"
 #include <cmsis_os2.h>
 #include "ui.h"
+#include "Send_Chassis.h"
 
 #include "iwdg.h"
 #include "buzzer.h"
@@ -272,10 +273,8 @@ void Chassis_Task(void *argument)
   /* Infinite loop */
   for(;;)
   {
-#if (USE_CHASSIS_HELM != 0 || USE_CHASSIS_OMNI != 0)
-    Chassis_Tasks();
-#endif
-    Supercup_SendData();
+    Chassis_CAN_SendAll();
+
     osDelay(1);
   }
   /* USER CODE END Chassis_Task */

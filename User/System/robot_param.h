@@ -11,7 +11,7 @@
 // 1 = 全向轮步兵 (OMNI)
 // 2 = 不使用底盘（仅云台+发射）
 // ★ 切换车型只需改这一行 ★
-#define ROBOT_TYPE  1
+#define ROBOT_TYPE  2
 
 /* 根据 ROBOT_TYPE 自动派生底盘宏 */
 #if   (ROBOT_TYPE == 0)
@@ -34,7 +34,7 @@
 #define DEBUG_TYPE       (0)   // 调试模式模式    
 
 //模块类型选择
-#define USE_GIMBAL       (0)   // 启用云台
+#define USE_GIMBAL       (1)   // 启用云台
 #define USE_SHOOT        (0)   // 启用发射机构
 
 //电机类型选择  （0不使用  1使用）

@@ -21,6 +21,33 @@ extern uint8_t Fdcanx_Receive(FDCAN_HandleTypeDef *hfdcan,	FDCAN_RxHeaderTypeDef
 extern void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan);
 
 
+/* 自定义板间通信CAN ID */
+/* 
+ */
+#define CAN_ID_CHASSIS_MODE          0x101
+#define CAN_ID_CHASSIS_IMU_ATTITUDE  0x102
+#define CAN_ID_CHASSIS_IMU_GYRO      0x103
+#define CAN_ID_SHOOT_TRIGGER_MODE    0x104
+#define CAN_ID_REFEREE_DATA_1        0x091
+#define CAN_ID_REFEREE_DATA_2        0x092
+#define CAN_ID_REFEREE_DATA_3        0x093
+
+/* CAN 接收路由表类型 */
+typedef void (*CanRxHandler_t)(uint8_t data[8]);
+typedef struct {
+    uint16_t       id;
+    CanRxHandler_t handler;
+} CanRxEntry_t;
+
+typedef void (*CanTxPack_t)(uint8_t data[8]);
+typedef struct {
+    uint16_t    id;
+    CanTxPack_t pack;
+    uint8_t     divider;   /* 分频系数: 1=每tick发, 2=每2tick发, 5=每5tick发 */
+    uint8_t     phase;     /* 相位偏移: 0 ~ divider-1, 错开突发 */
+} CanTxEntry_t;
+
+
 #endif /* __CAN_RECEIVE_SEND_H__ */
 
 
