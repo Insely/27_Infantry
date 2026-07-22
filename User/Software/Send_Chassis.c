@@ -8,6 +8,7 @@
 #include "IMU_updata.h"
 
 #include "dm_imu.h"
+#include "remote_control.h"
 
 #include "User_math.h"
 #include "robot_param.h"
@@ -31,7 +32,19 @@ static void Pack_IMU_Gyro(uint8_t data[8])
     float_to_bytes(dm_imu_gimbal.gyro[2],                  &data[4]);
 }
 
+static void Pack_RC_ch_data(uint8_t data[8])
+{
+    uint16_to_bytes(RC_data.rc.ch[0], &data[0]);
+    uint16_to_bytes(RC_data.rc.ch[1], &data[2]);
+    uint16_to_bytes(RC_data.rc.ch[2], &data[4]);
+    uint16_to_bytes(RC_data.rc.ch[3], &data[6]);
+}
 
+static void Pack_RC_s_data(uint8_t data[8])
+{
+    uint8_to_bytes(RC_data.rc.s[0], &data[0]);
+    uint8_to_bytes(RC_data.rc.s[1], &data[1]);
+}
 
 static void Pack_TRIGGER_MODE(uint8_t data[8])
 {
@@ -49,6 +62,8 @@ static const CanTxEntry_t ChassisTxTable[] = {
     /* 200Hz 模式/状态, 各自错开 */
     { CAN_ID_CHASSIS_MODE,         Pack_Control_Mode,   5, 0 },
     { CAN_ID_SHOOT_TRIGGER_MODE,   Pack_TRIGGER_MODE,   5, 2 },
+    { CAN_ID_CHASSIS_RC_CH,        Pack_RC_ch_data,     2, 0 },
+    { CAN_ID_CHASSIS_RC_S,         Pack_RC_s_data,      5, 1 },
     /* 200Hz yaw控制附加数据: 速度前馈 + 扫描速度 */
 };
 
@@ -59,8 +74,11 @@ void Chassis_CAN_SendAll(void)
     static enum trigger_mode_e last_trigger_mode = TRIGGER_CLOSE;
     static enum control_mode_e last_control_mode = RC;
     static enum chassis_mode_e last_chassis_mode = FLOW;
+    static uint8_t last_rc_s0 = 0;
+    static uint8_t last_rc_s1 = 0;
     static uint8_t trigger_mode_fast_resend = 0;
     static uint8_t mode_fast_resend = 0;
+    static uint8_t rc_s_fast_resend = 0;
     uint8_t buf[8];
 
     if (Global.Shoot.trigger_mode != last_trigger_mode)
@@ -73,7 +91,14 @@ void Chassis_CAN_SendAll(void)
     {
         last_control_mode = Global.Control.mode;
         last_chassis_mode = Global.Chassis.mode;
-        mode_fast_resend = 5; /* 模式边沿与 trigger 一样快速补发 */
+        mode_fast_resend = 5; /* mode change uses the same fast resend as trigger. */
+    }
+
+    if (RC_data.rc.s[0] != last_rc_s0 || RC_data.rc.s[1] != last_rc_s1)
+    {
+        last_rc_s0 = RC_data.rc.s[0];
+        last_rc_s1 = RC_data.rc.s[1];
+        rc_s_fast_resend = 5; /* Resend switch changes at 1kHz for 5ms. */
     }
 
     for (uint8_t i = 0; i < sizeof(ChassisTxTable)/sizeof(ChassisTxTable[0]); i++) {
@@ -83,6 +108,9 @@ void Chassis_CAN_SendAll(void)
             should_send = 1;
         }
         if (ChassisTxTable[i].id == CAN_ID_CHASSIS_MODE && mode_fast_resend > 0) {
+            should_send = 1;
+        }
+        if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_S && rc_s_fast_resend > 0) {
             should_send = 1;
         }
 
@@ -95,6 +123,9 @@ void Chassis_CAN_SendAll(void)
                 }
                 if (ChassisTxTable[i].id == CAN_ID_CHASSIS_MODE && mode_fast_resend > 0) {
                     mode_fast_resend--;
+                }
+                if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_S && rc_s_fast_resend > 0) {
+                    rc_s_fast_resend--;
                 }
             }
         }

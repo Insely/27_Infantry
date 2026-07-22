@@ -34,7 +34,7 @@
 #define DEBUG_TYPE       (0)   // 调试模式模式    
 
 //模块类型选择
-#define USE_GIMBAL       (1)   // 启用云台
+#define USE_GIMBAL       (0)   // 启用云台
 #define USE_SHOOT        (0)   // 启用发射机构
 
 //电机类型选择  （0不使用  1使用）
@@ -115,8 +115,8 @@
 #define BULLET_NUM 12                  // 拨弹盘容纳弹丸个数
 
 //电机ID
-#define ShootMotor_L  CAN_1_3
-#define ShootMotor_R  CAN_1_4
+#define ShootMotor_L  CAN_1_5
+#define ShootMotor_R  CAN_1_7
 #define TRIGGER_MOTOR CAN_3_2
 
 //电机种类

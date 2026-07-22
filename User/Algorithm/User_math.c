@@ -178,6 +178,7 @@ uint16_t bytes_to_uint16(uint8_t *bytes)
     temp |= ((uint16_t)bytes[1] << 8);
     return temp;
 }
+
 // 将uint8_t按字节拆分（其实就是赋值）
 void uint8_to_bytes(uint8_t value, uint8_t *bytes) 
 {
@@ -189,3 +190,16 @@ uint8_t bytes_to_uint8(uint8_t *bytes)
 {
     return bytes[0];
 }
+
+// 将char按字节拆分
+void char_to_bytes(char value, uint8_t *bytes) 
+{
+    bytes[0] = (uint8_t)value;
+}
+
+// 将字节数组转换为char
+char bytes_to_char(uint8_t *bytes) 
+{
+    return (char)bytes[0];
+}
+
