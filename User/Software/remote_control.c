@@ -18,7 +18,7 @@
 
 #include "cmsis_os2.h"
 
-#define RC_JOYSTICK_MAX 660.0f
+#define RC_JOYSTICK_MAX 780.0f
 #define CHASSIS_MAX_SPEED_X 2.5f              // 底盘x轴最大物理速度  m/s
 #define CHASSIS_MAX_SPEED_Y 2.5f              // 底盘y轴最大物理速度  m/s
 static uint32_t mouse_l_press_start_time = 0; // 记录按下的起始时间戳
@@ -458,7 +458,7 @@ void Keyboard_MouseController(void)
 void Remote_Tasks(void)
 {
     // 遥控数据更新
-    RCdata_Updater();
+    //RCdata_Updater();
     // 遥控器控制
     RC_Controller();
     // 键鼠控制

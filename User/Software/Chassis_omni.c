@@ -276,16 +276,16 @@ void Chassis_Calculater()
  */
 void Chassis_Controller()
 {
-    float Plimit = 0.0f;
-    if (Referee_data.Chassis_Power_Limit == 0)
-        Plimit = 1.0f;
-    else
-        Plimit = Chassis_PowerLimit(Chassis.current[0], Chassis.current[1], Chassis.current[2], Chassis.current[3],
-                                    CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
-                                    CHASSISMotor_get_data(WHEEL_FR).speed_rpm,
-                                    CHASSISMotor_get_data(WHEEL_BL).speed_rpm,
-                                    CHASSISMotor_get_data(WHEEL_BR).speed_rpm,
-                                    Referee_data.Chassis_Power_Limit);
+    float Plimit = 1.0f;
+    // if (Referee_data.Chassis_Power_Limit == 0)
+    //     Plimit = 1.0f;
+    // else
+    //     Plimit = Chassis_PowerLimit(Chassis.current[0], Chassis.current[1], Chassis.current[2], Chassis.current[3],
+    //                                 CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+    //                                 CHASSISMotor_get_data(WHEEL_FR).speed_rpm,
+    //                                 CHASSISMotor_get_data(WHEEL_BL).speed_rpm,
+    //                                 CHASSISMotor_get_data(WHEEL_BR).speed_rpm,
+    //                                 Referee_data.Chassis_Power_Limit);
     if (Global.Control.mode != LOCK)
     {
         CHASSISMotor_set(Plimit * Chassis.current[0], WHEEL_FL);

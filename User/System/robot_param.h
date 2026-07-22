@@ -94,8 +94,8 @@
 
 //电机CAN ID
 #define YAWMotor   DM_CAN_3_2
-#define PITCHMotor DM_CAN_1_1
-#define GPSMotor   DM_CAN_1_3
+#define PITCHMotor DM_CAN_3_1
+#define GPSMotor   DM_CAN_3_3
 
 //电机种类
 #define GIMBAL_YAW_MOTOR_TYPE   ((Motor_Type_e)DM_4310)
@@ -115,8 +115,8 @@
 #define BULLET_NUM 12                  // 拨弹盘容纳弹丸个数
 
 //电机ID
-#define ShootMotor_L  CAN_1_3
-#define ShootMotor_R  CAN_1_4
+#define ShootMotor_L  CAN_1_5
+#define ShootMotor_R  CAN_1_7
 #define TRIGGER_MOTOR CAN_3_2
 
 //电机种类

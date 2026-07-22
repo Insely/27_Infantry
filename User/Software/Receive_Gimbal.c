@@ -44,14 +44,13 @@ static void Receive_RC_ch_data(uint8_t data[8])
     RC_data.rc.ch[2] = (int16_t)bytes_to_uint16(&data[4]);
     RC_data.rc.ch[3] = (int16_t)bytes_to_uint16(&data[6]);
     RC_data.rc.ch[4] = (int16_t)bytes_to_uint16(&data[8]);
-    RC_data.online = 30;
 }
 
 static void Receive_RC_s_data(uint8_t data[8])
 {
     RC_data.rc.s[0] = bytes_to_uint8(&data[0]);
     RC_data.rc.s[1] = bytes_to_uint8(&data[1]);
-    RC_data.online = 100;
+    RC_data.online = bytes_to_int(&data[2]);    
 }
 
 static const CanRxEntry_t GimbalRxTable[] = {

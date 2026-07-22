@@ -304,7 +304,7 @@ void Motor_control_Task(void *argument)
   #endif
   #if(USE_CHASSIS_OMNI !=0)
       if (Global.Control.mode != LOCK){
-      DJIMotor_SendCurrent(CAN_20063508_1_4_ID, DJI_CAN_2);
+      DJIMotor_SendCurrent(CAN_20063508_1_4_ID, DJI_CAN_1);
       }
   #endif
   #if (USE_SHOOT != 0)
