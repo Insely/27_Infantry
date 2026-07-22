@@ -72,7 +72,7 @@ void Chassis_CAN_SendAll(void)
 {
     static uint8_t tick = 0;
     static enum trigger_mode_e last_trigger_mode = TRIGGER_CLOSE;
-    static enum control_mode_e last_control_mode = RC;
+    static enum control_mode_e last_control_mode = LOCK;
     static enum chassis_mode_e last_chassis_mode = FLOW;
     static uint8_t last_rc_s0 = 0;
     static uint8_t last_rc_s1 = 0;
