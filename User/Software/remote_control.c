@@ -207,12 +207,12 @@ void FSI6XtoRCdata()
  */
 void RCdata_Updater()
 {
-    if (DT7_data.online >= 0)
-      DT7toRCdata();
-    else if (FSI6X_data.online >= 0)
+    // if (DT7_data.online >= 0)
+    //   DT7toRCdata();
+    // else if (FSI6X_data.online >= 0)
       FSI6XtoRCdata();
-    else if (VT13_data.online >= 0)
-      VT13toRCdata(); 
+    // else if (VT13_data.online >= 0)
+    //   VT13toRCdata(); 
 }
 
 

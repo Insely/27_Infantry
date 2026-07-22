@@ -17,6 +17,7 @@
 
 #include "DT7.h"
 #include "VT13.h"
+#include "FSI6X.h"
 #include "IMU_updata.h"
 #include "referee_system.h"
 #include "motor.h"
@@ -148,13 +149,14 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 
   case (uintptr_t)UART5: // 遥控器
   {
-    DT7_DecodeData(UART5_data.rev_data);
-   /*富斯遥控器  
-   if( UART5_data.rev_data[23] != 12 ) 
+    if (Size >= 25 && UART5_data.rev_data[0] == 0x0F)
     {
-      FSI6X_DecodeData(UART5_data.rev_data, &FSI6X_data);
-    } 
-    */
+      FSI6X_decode_data(UART5_data.rev_data, &FSI6X_data);
+    }
+    else
+    {
+      DT7_DecodeData(UART5_data.rev_data);
+    }
 
     // 重新启动DMA接收
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART5_data.rev_data, UART_BUFFER_SIZE);
