@@ -43,7 +43,8 @@ static void Receive_RC_ch_data(uint8_t data[8])
     RC_data.rc.ch[1] = (int16_t)bytes_to_uint16(&data[2]);
     RC_data.rc.ch[2] = (int16_t)bytes_to_uint16(&data[4]);
     RC_data.rc.ch[3] = (int16_t)bytes_to_uint16(&data[6]);
-    RC_data.online = 100;
+    RC_data.rc.ch[4] = (int16_t)bytes_to_uint16(&data[8]);
+    RC_data.online = 30;
 }
 
 static void Receive_RC_s_data(uint8_t data[8])

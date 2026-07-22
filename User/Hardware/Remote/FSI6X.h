@@ -23,13 +23,14 @@ typedef struct
 	uint16_t CH16;//通道16数值
 	uint8_t ConnectState;//遥控器与接收器连接状态 0=未连接，1=正常连接
     int online;
-}FSI6X_data_s;
-extern FSI6X_data_s FSI6X_data;
+}FSI6X_data_Struct;
+extern FSI6X_data_Struct FSI6X_data;
 
 #define FS_UP ((uint16_t)240)
 #define FS_DOWN ((uint16_t)1807)
 #define FS_MID ((uint16_t)1024)
+#define NULL ((void*)0)
 
-void FSI6X_DecodeData(uint8_t *sbus_buf,FSI6X_data_s *FSI6X_data);
+void FSI6X_decode_data(uint8_t *sbus_buf,FSI6X_data_Struct *SBUS_CH);
 
 #endif 
