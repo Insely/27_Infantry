@@ -456,7 +456,7 @@ void Keyboard_MouseController(void)
 void Remote_Tasks(void)
 {
 	// 遥控数据更新
-	RCdata_Updater();
+	//RCdata_Updater();
     // 遥控器控制
     RC_Controller();
     // 键鼠控制
