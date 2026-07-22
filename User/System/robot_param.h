@@ -71,10 +71,10 @@
   #define WHEEL_RATIO (14.00f)  // 底盘电机减速比
 
   // 驱动电机 CAN ID
-  #define WHEEL_FL CAN_1_1
-  #define WHEEL_FR CAN_1_2
-  #define WHEEL_BL CAN_1_3
-  #define WHEEL_BR CAN_1_4
+  #define WHEEL_FL CAN_1_4
+  #define WHEEL_FR CAN_1_3
+  #define WHEEL_BL CAN_1_2
+  #define WHEEL_BR CAN_1_1
 
 #else
   /* ========== 无底盘模式默认值 ========== */
