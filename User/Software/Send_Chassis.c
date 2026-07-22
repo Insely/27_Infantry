@@ -38,12 +38,15 @@ static void Pack_RC_ch_data(uint8_t data[8])
     uint16_to_bytes(RC_data.rc.ch[1], &data[2]);
     uint16_to_bytes(RC_data.rc.ch[2], &data[4]);
     uint16_to_bytes(RC_data.rc.ch[3], &data[6]);
+    uint16_to_bytes(RC_data.rc.ch[4], &data[8]);
+
 }
 
 static void Pack_RC_s_data(uint8_t data[8])
 {
     uint8_to_bytes(RC_data.rc.s[0], &data[0]);
     uint8_to_bytes(RC_data.rc.s[1], &data[1]);
+    int_to_bytes(RC_data.online, &data[2]);
 }
 
 static void Pack_TRIGGER_MODE(uint8_t data[8])

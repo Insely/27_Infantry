@@ -42,4 +42,6 @@ void uint16_to_bytes(uint16_t value, uint8_t *bytes);
 uint16_t bytes_to_uint16(uint8_t *bytes);
 void uint8_to_bytes(uint8_t value, uint8_t *bytes);
 uint8_t bytes_to_uint8(uint8_t *bytes);
+void int_to_bytes(int value, uint8_t *bytes);
+int bytes_to_int(uint8_t *bytes);
 #endif // !__USER_MATH__

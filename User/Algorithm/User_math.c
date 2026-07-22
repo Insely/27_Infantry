@@ -203,3 +203,21 @@ char bytes_to_char(uint8_t *bytes)
     return (char)bytes[0];
 }
 
+void int_to_bytes(int value, uint8_t *bytes) 
+{
+    bytes[0] = (value >> 0) & 0xFF; // 低位字节
+    bytes[1] = (value >> 8) & 0xFF; // 高位字节
+    bytes[2] = (value >> 16) & 0xFF; // 第三字节
+    bytes[3] = (value >> 24) & 0xFF; // 第四字节
+}
+
+int bytes_to_int(uint8_t *bytes) 
+{
+    int temp = 0;
+    temp |= ((int)bytes[0] << 0);
+    temp |= ((int)bytes[1] << 8);
+    temp |= ((int)bytes[2] << 16);
+    temp |= ((int)bytes[3] << 24);
+    return temp;
+}
+
