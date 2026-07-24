@@ -244,7 +244,6 @@ void Gimbal_Task(void *argument)
   osDelay(500);
   Gimbal_Init();
   osDelay(500);
-  GPS_Init();
   /* Infinite loop */
   for(;;)
   {

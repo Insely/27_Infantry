@@ -29,18 +29,15 @@ typedef struct
     pid_t pitch_auto_location_pid;
     pid_t yaw_auto_speed_pid;
     pid_t yaw_auto_location_pid;
-    pid_t gps_speed_pid;
-    pid_t gps_location_pid;
+
 
     /*-------状态量-------*/
     //速度
     float yaw_speed_now;
     float pitch_speed_now;
-    float gps_speed_now;
     //位置 
     float yaw_location_now;
     float pitch_location_now;
-    float gps_location_now;
     enum gimbal_state_e
         {
             RIGHTING,   // 纠偏
@@ -52,11 +49,9 @@ typedef struct
     //速度
     float yaw_speed_set;
     float pitch_speed_set;
-    float gps_speed_set;
     //位置 
     float yaw_location_set;
     float pitch_location_set;
-    float gps_location_set;  
     // 斜坡
     RampGenerator pitch_ramp;
     RampGenerator yaw_ramp;
@@ -73,7 +68,6 @@ void Gimbal_Init();
 void Gimbal_Tasks();
 void Gimbal_SetPitchAngle(float angle);
 void Gimbal_SetYawAngle(float angle);
-void GPS_Init();
 
 #endif 
 

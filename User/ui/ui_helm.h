@@ -18,7 +18,6 @@ extern uint8_t ui_helm_dirty_string[2];
 #define ui_helm_shootend_round_long ((ui_interface_round_t*)&(ui_helm_now_figure[7]))
 
 #define ui_helm_mode_text (&ui_helm_now_string[0])
-#define ui_helm_gps_text (&ui_helm_now_string[1])
 #define ui_helm_pitch_number ((ui_interface_number_t*)&(ui_helm_now_figure[8]))
 
 #ifndef MANUAL_DIRTY
@@ -35,6 +34,5 @@ extern uint8_t ui_helm_dirty_string[2];
 
 void ui_init_helm();
 void ui_update_helm();
-void GPSui_change(void);
 
 #endif

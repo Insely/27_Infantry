@@ -355,15 +355,6 @@ void Keyboard_MouseController(void)
         // Global.Cap.speed = 1.5f;
     }
 
-    if (IF_KEY_PRESSED_C)
-    {
-        Global.Gimbal.GPS = pos_L;
-    }
-    else
-    {
-        Global.Gimbal.GPS = pos_H;
-    }
-
     if (IF_KEY_PRESSED_Q || Wait(WAIT_Q)) // 小陀螺开关
     {
         if (Wait(WAIT_Q)) // 消抖结束触发

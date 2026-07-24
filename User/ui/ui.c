@@ -168,26 +168,12 @@ void pitch_ui_change()
     ui_helm_pitch_number->number = -(int32_t)(Gimbal.pitch_location_now);
 }
 
-void GPSui_change(void)
-{
-    if (Global.Gimbal.GPS == pos_H)
-    {
-        strcpy(ui_helm_gps_text->string, "h");
-        ui_helm_gps_text->str_length = 1;
-    }
-    else if(Global.Gimbal.GPS == pos_L)
-    {
-        strcpy(ui_helm_gps_text->string, "l");
-        ui_helm_gps_text->str_length = 1;
-    }
-}
 
 
 void ui_updata()
 {
   chassis_mode_change();
   pitch_ui_change();
-  GPSui_change();
   ui_helm_dirty_string[0] = 1;
   ui_helm_dirty_string[1] = 1;
   ui_update_helm();
