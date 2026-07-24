@@ -32,20 +32,23 @@ static void Pack_IMU_Gyro_01(uint8_t data[8])
     float_to_bytes(dm_imu_gimbal.gyro[1],                  &data[4]);
 }
 
-static void Pack_IMU_Gyro_23(uint8_t data[8])
+static void Pack_IMU_Gyro_2(uint8_t data[8])
 {
     float_to_bytes(dm_imu_gimbal.gyro[2],                  &data[0]);
     float_to_bytes(dm_imu_gimbal.gyro[3],                  &data[4]);
 }
 
-static void Pack_RC_ch_data(uint8_t data[8])
+static void Pack_RC_ch_data_0_3(uint8_t data[8])
 {
     uint16_to_bytes(RC_data.rc.ch[0], &data[0]);
     uint16_to_bytes(RC_data.rc.ch[1], &data[2]);
     uint16_to_bytes(RC_data.rc.ch[2], &data[4]);
     uint16_to_bytes(RC_data.rc.ch[3], &data[6]);
-    uint16_to_bytes(RC_data.rc.ch[4], &data[8]);
+}
 
+static void Pack_RC_ch_data_4(uint8_t data[8])
+{
+    uint16_to_bytes(RC_data.rc.ch[4], &data[0]);
 }
 
 static void Pack_RC_s_data(uint8_t data[8])
@@ -68,11 +71,12 @@ static const CanTxEntry_t ChassisTxTable[] = {
     /* 1kHz 速度+IMU: 控制环核心 */
     { CAN_ID_CHASSIS_IMU_ATTITUDE, Pack_IMU_Attitude,   1, 0 },
     { CAN_ID_CHASSIS_IMU_GYRO_01,     Pack_IMU_Gyro_01,       1, 0 },
-    { CAN_ID_CHASSIS_IMU_GYRO_23,     Pack_IMU_Gyro_23,       1, 0 },
+    { CAN_ID_CHASSIS_IMU_GYRO_23,     Pack_IMU_Gyro_2,       1, 0 },
     /* 200Hz 模式/状态, 各自错开 */
     { CAN_ID_CHASSIS_MODE,         Pack_Control_Mode,   5, 0 },
     { CAN_ID_SHOOT_TRIGGER_MODE,   Pack_TRIGGER_MODE,   5, 2 },
-    { CAN_ID_CHASSIS_RC_CH,        Pack_RC_ch_data,     2, 0 },
+    { CAN_ID_CHASSIS_RC_CH,        Pack_RC_ch_data_0_3,     2, 0 },
+    { CAN_ID_CHASSIS_RC_CH_4,      Pack_RC_ch_data_4,     2, 1 },
     { CAN_ID_CHASSIS_RC_S,         Pack_RC_s_data,      5, 1 },
     /* 200Hz yaw控制附加数据: 速度前馈 + 扫描速度 */
 };
