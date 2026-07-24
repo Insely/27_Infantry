@@ -46,9 +46,8 @@ static bool ReadyCheck(float yaw_pos, float pitch_pos)
 void Gimbal_Init()
 {
     // 云台电机初始化
-    GIMBALMotor_init(DM_4310, YAWMotor);
-    GIMBALMotor_init(DM_4310, PITCHMotor);
-    GIMBALMotor_init(DM_4310, GPSMotor);
+    GIMBALMotor_init(GIMBAL_YAW_MOTOR_TYPE, YAWMotor);
+    GIMBALMotor_init(GIMBAL_PITCH_MOTOR_TYPE, PITCHMotor);
     /*PID速度环初始化*/
     // 遥控
     // PID_Set(&Gimbal.pitch_speed_pid, 1300.0f, 0.0f, 0.0f, 1000000.0f, 1000000.0f);
@@ -149,16 +148,7 @@ void Gimbal_Calculater()
         Gimbal.yaw_speed_set = PID_Cal(&Gimbal.yaw_location_pid, Gimbal.yaw_location_now, Gimbal.yaw_location_set) * DEG_TO_RAD -
                                IMU_data.gyro[2]; 
         Gimbal.position[0] = -Gimbal.pitch_location_set * DEG_TO_RAD;
-        if (Global.Gimbal.GPS == pos_H)
-        {
-            Gimbal.gps_location_set = -1.5f;
-            Gimbal.position[2] = Gimbal.gps_location_set * DEG_TO_RAD;
-        }
-        else
-        {
-            Gimbal.gps_location_set = -26.0f;
-            Gimbal.position[2] = Gimbal.gps_location_set * DEG_TO_RAD;
-        } 
+
         if (Global.Auto.input.Auto_control_online > 0)
             Global.Auto.input.Auto_control_online--;
     }
@@ -211,7 +201,6 @@ void Gimbal_Controller()
     {
         GIMBALMotor_set(PITCHMotor, Gimbal.position[0], 0, 0.0f, 40.0f, 2.0f);
         GIMBALMotor_set(YAWMotor, 0, Gimbal.yaw_speed_set, 0, 0, 2.3f);
-        GIMBALMotor_set(GPSMotor, Gimbal.position[2], 0, 0, 125.0f, 1.5f);
         // if (!((Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE || Global.Auto.input.control_mode == 0) &&
         //       (Global.Gimbal.mode == NORMAL || Global.Gimbal.mode == SHOOT)))
         //     GIMBALMotor_set(PITCHMotor, 0, Gimbal.pitch_speed_set,0 , 0.0f, 2.6f);
@@ -220,7 +209,6 @@ void Gimbal_Controller()
     {
         GIMBALMotor_set(PITCHMotor, 0, 0, 0, 0, 0);
         GIMBALMotor_set(YAWMotor, 0, 0, 0, 0, 0);
-        GIMBALMotor_set(GPSMotor, Gimbal.position[2], 0, 0, 125.0f, 1.5f);
     }
 }
 
@@ -252,7 +240,6 @@ void Gimbal_Tasks(void)
         // 纠偏阶段强制输出，不受 LOCK 模式影响
         GIMBALMotor_set(PITCHMotor, Gimbal.position[0], 0, 0, 50.0f, 1.5f);
         GIMBALMotor_set(YAWMotor, 0, Gimbal.yaw_speed_set, 0, 0, 0.5f);
-        GIMBALMotor_set(GPSMotor, Gimbal.position[2], 0, 0, 90.0f, 1.5f);
     }
     else
     {
@@ -288,11 +275,4 @@ void Gimbal_SetYawAngle(float angle)
     Global.Gimbal.input.yaw = angle;
 }
 
-void GPS_Init()
-{
-    Global.Gimbal.GPS = pos_H;
-    Gimbal.gps_location_set = -1.5f;
-    Gimbal.position[2] = Gimbal.gps_location_set * DEG_TO_RAD;
-    GIMBALMotor_set(GPSMotor, Gimbal.position[2], 0, 0, 100.0f, 1.5f);
-    DMMotor_SendCtrl(DM_CAN_1_3);
-}
+

@@ -355,14 +355,7 @@ void Keyboard_MouseController(void)
         // Global.Cap.speed = 1.5f;
     }
 
-    if (IF_KEY_PRESSED_C)
-    {
-        Global.Gimbal.GPS = pos_L;
-    }
-    else
-    {
-        Global.Gimbal.GPS = pos_H;
-    }
+
 
     if (IF_KEY_PRESSED_Q || Wait(WAIT_Q)) // Ð¡ÍÓÂÝ¿ª¹Ø
     {

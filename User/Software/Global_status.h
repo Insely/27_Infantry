@@ -36,7 +36,6 @@ typedef struct
         {
             float pitch;
             float yaw;
-            float gps;
         } input;
         enum pitch_mode_e
         {
@@ -62,11 +61,7 @@ typedef struct
             Pitch_lock,   // pitch锁死
         } pitch_lock;  
 
-        enum gps_position
-        {
-            pos_H,  //定位模块默认位置
-            pos_L,  //定位模块过洞位置
-        } GPS;
+
         
         enum yaw_lock_e
         {

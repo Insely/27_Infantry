@@ -119,20 +119,6 @@ void ui_init_helm()
     ui_helm_pitch_number->_b = 1;
     ui_helm_pitch_number->number = 0;
 
-    // GPS×´Ì¬ÎÄ×Ö
-    ui_helm_gps_text->figure_type = 7;
-    ui_helm_gps_text->operate_type = 1;
-    ui_helm_gps_text->layer = 0;
-    ui_helm_gps_text->color = 2;
-    ui_helm_gps_text->start_x = 1500;
-    ui_helm_gps_text->start_y = 480;
-    ui_helm_gps_text->width = 3;
-    ui_helm_gps_text->font_size = 30;
-    ui_helm_gps_text->str_length = 1;
-    if (Global.Gimbal.GPS == pos_L)
-        strcpy(ui_helm_gps_text->string, "l");
-    else
-        strcpy(ui_helm_gps_text->string, "h");
 
     uint32_t idx = 0;
     for(int i=0;i<9;i++)

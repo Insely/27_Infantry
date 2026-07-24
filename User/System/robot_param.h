@@ -95,17 +95,14 @@
 //电机CAN ID
 #define YAWMotor   DM_CAN_3_2
 #define PITCHMotor DM_CAN_1_1
-#define GPSMotor   DM_CAN_1_3
 
 //电机种类
 #define GIMBAL_YAW_MOTOR_TYPE   ((Motor_Type_e)DM_4310)
 #define GIMBAL_PITCH_MOTOR_TYPE ((Motor_Type_e)DM_4310)
-#define GPS_MOTOR_TYPE ((Motor_Type_e)DM_4310)
 
 //电机零点设置
 #define YAW_ZERO   (102.5f)
 #define PITCH_ZERO (-115.58f)
-#define GPS_ZERO   (0.0f)
 
 
 /*------------------------------------------------- Shoot -------------------------------------------------------------*/
