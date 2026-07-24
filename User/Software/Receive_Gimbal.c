@@ -22,14 +22,20 @@ static void Receive_Control_Mode(uint8_t data[8])
 static void Receive_IMU_Attitude(uint8_t data[8])
 {
     dm_imu_gimbal.pitch = bytes_to_float(&data[0]);
-    dm_imu_gimbal.yaw_cnt = bytes_to_float(&data[4]);
+    dm_imu_gimbal.yaw = bytes_to_float(&data[4]);
     //dm_imu_gimbal.yaw = dm_imu_gimbal.yaw_cnt;
 }
 
-static void Receive_IMU_Gyro(uint8_t data[8])
+static void Receive_IMU_Gyro_01(uint8_t data[8])
 {
     dm_imu_gimbal.gyro[0] = bytes_to_float(&data[0]);
-    dm_imu_gimbal.gyro[2] = bytes_to_float(&data[4]);
+    dm_imu_gimbal.gyro[1] = bytes_to_float(&data[4]);
+}
+
+static void Receive_IMU_Gyro_23(uint8_t data[8])
+{
+    dm_imu_gimbal.gyro[2] = bytes_to_float(&data[0]);
+    dm_imu_gimbal.gyro[3] = bytes_to_float(&data[4]);
 }
 
 static void Receive_Trigger_Mode(uint8_t data[8])
@@ -56,7 +62,8 @@ static void Receive_RC_s_data(uint8_t data[8])
 static const CanRxEntry_t GimbalRxTable[] = {
     { CAN_ID_CHASSIS_MODE,         Receive_Control_Mode },
     { CAN_ID_CHASSIS_IMU_ATTITUDE, Receive_IMU_Attitude },
-    { CAN_ID_CHASSIS_IMU_GYRO,     Receive_IMU_Gyro     },
+    { CAN_ID_CHASSIS_IMU_GYRO_01,     Receive_IMU_Gyro_01 },
+    { CAN_ID_CHASSIS_IMU_GYRO_23,     Receive_IMU_Gyro_23 },
     { CAN_ID_SHOOT_TRIGGER_MODE,   Receive_Trigger_Mode },
     { CAN_ID_CHASSIS_RC_CH,        Receive_RC_ch_data   },
     { CAN_ID_CHASSIS_RC_S,         Receive_RC_s_data    },
