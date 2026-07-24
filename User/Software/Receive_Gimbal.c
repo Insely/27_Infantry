@@ -35,7 +35,6 @@ static void Receive_IMU_Gyro_01(uint8_t data[8])
 static void Receive_IMU_Gyro_23(uint8_t data[8])
 {
     dm_imu_gimbal.gyro[2] = bytes_to_float(&data[0]);
-    dm_imu_gimbal.gyro[3] = bytes_to_float(&data[4]);
 }
 
 static void Receive_Trigger_Mode(uint8_t data[8])
@@ -43,13 +42,17 @@ static void Receive_Trigger_Mode(uint8_t data[8])
     Global.Shoot.trigger_mode = (enum trigger_mode_e)((int)bytes_to_float(&data[0]));
 }
 
-static void Receive_RC_ch_data(uint8_t data[8])
+static void Receive_RC_ch_0_3_data(uint8_t data[8])
 {
     RC_data.rc.ch[0] = (int16_t)bytes_to_uint16(&data[0]);
     RC_data.rc.ch[1] = (int16_t)bytes_to_uint16(&data[2]);
     RC_data.rc.ch[2] = (int16_t)bytes_to_uint16(&data[4]);
     RC_data.rc.ch[3] = (int16_t)bytes_to_uint16(&data[6]);
-    RC_data.rc.ch[4] = (int16_t)bytes_to_uint16(&data[8]);
+}
+
+static void Receive_RC_ch_4_data(uint8_t data[8])
+{
+    RC_data.rc.ch[4] = (int16_t)bytes_to_uint16(&data[0]);
 }
 
 static void Receive_RC_s_data(uint8_t data[8])
@@ -65,7 +68,8 @@ static const CanRxEntry_t GimbalRxTable[] = {
     { CAN_ID_CHASSIS_IMU_GYRO_01,     Receive_IMU_Gyro_01 },
     { CAN_ID_CHASSIS_IMU_GYRO_23,     Receive_IMU_Gyro_23 },
     { CAN_ID_SHOOT_TRIGGER_MODE,   Receive_Trigger_Mode },
-    { CAN_ID_CHASSIS_RC_CH,        Receive_RC_ch_data   },
+    { CAN_ID_CHASSIS_RC_CH_0_3,        Receive_RC_ch_0_3_data   },
+    { CAN_ID_CHASSIS_RC_CH_4,      Receive_RC_ch_4_data   },
     { CAN_ID_CHASSIS_RC_S,         Receive_RC_s_data    },
 };
 
