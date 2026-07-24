@@ -60,21 +60,21 @@ void DM_IMU_RS485_Decode(uint8_t* pData, uint16_t len);
 
 //can协议
 
-#define ACCEL_CAN_MAX (58.8f)
-#define ACCEL_CAN_MIN	(-58.8f)
-#define GYRO_CAN_MAX	(34.88f)
-#define GYRO_CAN_MIN	(-34.88f)
-#define PITCH_CAN_MAX	(90.0f)
-#define PITCH_CAN_MIN	(-90.0f)
-#define ROLL_CAN_MAX	(180.0f)
-#define ROLL_CAN_MIN	(-180.0f)
-#define YAW_CAN_MAX		(180.0f)
-#define YAW_CAN_MIN 	(-180.0f)
-#define TEMP_MIN			(0.0f)
-#define TEMP_MAX			(60.0f)
-#define Quaternion_MIN	(-1.0f)
-#define Quaternion_MAX	(1.0f)
-#define IMU_MST_ID      (0x11)
+#define ACCEL_CAN_MAX (58.8f)    // 加速度CAN解码最大值
+#define ACCEL_CAN_MIN	(-58.8f)  // 加速度CAN解码最小值
+#define GYRO_CAN_MAX	(34.88f)  // 陀螺仪CAN解码最大值
+#define GYRO_CAN_MIN	(-34.88f) // 陀螺仪CAN解码最小值
+#define PITCH_CAN_MAX	(90.0f)   // pitch角CAN解码最大值
+#define PITCH_CAN_MIN	(-90.0f)  // pitch角CAN解码最小值
+#define ROLL_CAN_MAX	(180.0f)  // roll角CAN解码最大值
+#define ROLL_CAN_MIN	(-180.0f) // roll角CAN解码最小值
+#define YAW_CAN_MAX		(180.0f)  // yaw角CAN解码最大值
+#define YAW_CAN_MIN 	(-180.0f) // yaw角CAN解码最小值
+#define TEMP_MIN			(0.0f)    // 温度解码最小值
+#define TEMP_MAX			(60.0f)   // 温度解码最大值
+#define Quaternion_MIN	(-1.0f)  // 四元数分量解码最小值
+#define Quaternion_MAX	(1.0f)   // 四元数分量解码最大值
+#define IMU_MST_ID      (0x11)   // IMU主机CAN响应ID
 
 #define CMD_READ 0
 #define CMD_WRITE 1

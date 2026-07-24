@@ -26,10 +26,11 @@ extern void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan);
  */
 #define CAN_ID_CHASSIS_MODE          0x101
 #define CAN_ID_CHASSIS_IMU_ATTITUDE  0x102
-#define CAN_ID_CHASSIS_IMU_GYRO      0x103
-#define CAN_ID_SHOOT_TRIGGER_MODE    0x104
-#define CAN_ID_CHASSIS_RC_CH         0x105
-#define CAN_ID_CHASSIS_RC_S          0x106
+#define CAN_ID_CHASSIS_IMU_GYRO_01      0x103
+#define CAN_ID_CHASSIS_IMU_GYRO_23      0x104
+#define CAN_ID_SHOOT_TRIGGER_MODE    0x105
+#define CAN_ID_CHASSIS_RC_CH         0x106
+#define CAN_ID_CHASSIS_RC_S          0x107
 #define CAN_ID_REFEREE_DATA_1        0x091
 #define CAN_ID_REFEREE_DATA_2        0x092
 #define CAN_ID_REFEREE_DATA_3        0x093
