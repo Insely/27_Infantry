@@ -310,9 +310,7 @@ void Motor_control_Task(void *argument)
       DJIMotor_SendCurrent(CAN_20063508_1_4_ID, DJI_CAN_3);
   #endif
   #if (USE_GIMBAL != 0)
-      DMMotor_SendCtrl(DM_CAN_3_1);
-      DMMotor_SendCtrl(DM_CAN_1_2);
-      DMMotor_SendCtrl(DM_CAN_1_3);
+      DMMotor_SendCtrl(PITCHMotor);
   #endif
     if (Global.Chassis.input.reset != 1)
       HAL_IWDG_Refresh(&hiwdg1);
