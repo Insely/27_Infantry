@@ -96,6 +96,8 @@ void Gimbal_Updater()
     {
         angle_diff += 360;
     }
+    Gimbal.yaw_location_now += angle_diff;
+    last_yaw = GIMBAL_IMU_DATA.yaw;
     /*------目标量更新------*/
     Gimbal.yaw_location_set = Global.Gimbal.input.yaw;
 }
@@ -118,7 +120,7 @@ void Gimbal_Calculater()
     static uint8_t last_auto_active = 0;
     if ((Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE || Global.Auto.input.control_mode == 0) && (Global.Gimbal.mode == NORMAL || Global.Gimbal.mode == SHOOT))
     {
-        //切换到遥控模式跳变处理
+        // 切换到遥控模式跳变处理
         if (last_auto_active)
         {
             Gimbal.yaw_location_set = Gimbal.yaw_location_now;
