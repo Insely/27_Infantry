@@ -47,12 +47,12 @@ void Gimbal_Init()
     GIMBALMotor_init(GIMBAL_PITCH_MOTOR_TYPE, PITCHMotor);
     /*PID速度环初始化*/
     // 遥控
-    // PID_Set(&Gimbal.pitch_speed_pid, 1300.0f, 0.0f, 0.0f, 1000000.0f, 1000000.0f);
+    // PID_Set(&Gimbal.pitch_speed_pid, 10.0f, 0.0f, 0.0f, 1000000.0f, 1000000.0f);
     // 自瞄
     // PID_Set(&Gimbal.pitch_auto_speed_pid, 1500.0f, 0.0f, 0.0f, 1000000.0f, 1000000.0f);
     /*PID位置环初始化*/
     // 遥控
-    // PID_Set(&Gimbal.pitch_location_pid, 10.0f, 0.0f, 0.0f, 1718, 1000);
+    PID_Set(&Gimbal.pitch_location_pid, 15.0f, 0.0f, 0.5f, 1718, 1000);
     // 自瞄
     PID_Set(&Gimbal.pitch_auto_location_pid, 5.1f, 0.0f, 0.0f, 1500, 1000);
     // 上电进入纠偏状态，等待云台到位
@@ -98,11 +98,12 @@ void Gimbal_Calculater()
 
         if (last_auto_active)
         {
-            Gimbal.pitch_location_set = -DM_Motor_data[0][1].motor_data.para.pos * RAD_TO_DEG;
+            Gimbal.pitch_location_set = -GIMBALMotor_get_data(PITCHMotor).motor_data.para.pos * RAD_TO_DEG;
             Global.Gimbal.input.pitch = Gimbal.pitch_location_set;
         }
         last_auto_active = 0;
-        Gimbal.position[0] = -Gimbal.pitch_location_set * DEG_TO_RAD;
+        // Gimbal.position[0] = -Gimbal.pitch_location_set * DEG_TO_RAD;
+        Gimbal.pitch_speed_set = PID_Cal(&Gimbal.pitch_location_pid, Gimbal.pitch_location_now, Gimbal.pitch_location_set) * DEG_TO_RAD;
         if (Global.Auto.input.Auto_control_online > 0)
             Global.Auto.input.Auto_control_online--;
     }
@@ -159,7 +160,7 @@ void Gimbal_Controller()
 {
     if (Global.Control.mode != LOCK)
     {
-        GIMBALMotor_set(PITCHMotor, Gimbal.position[0], 0, 0.0f, 40.0f, 2.0f);
+        GIMBALMotor_set(PITCHMotor, 0, Gimbal.pitch_speed_set, 0.0f, 0.0f, 1.0f);
     }
     else
     {

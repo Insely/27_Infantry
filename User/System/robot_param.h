@@ -87,8 +87,8 @@
 /*------------------------------------------------- Gimbal -----------------------------------------------------------*/
 
 //云台物理参数
-#define PITCHI_MAX_ANGLE (45.0f)      // 最大仰角
-#define PITCHI_MIN_ANGLE (-3.0f)      // 最大俯角 
+#define PITCHI_MAX_ANGLE (30.0f)      // pitch max angle
+#define PITCHI_MIN_ANGLE (-24.0f)     // pitch min angle
 #define YAW_RATIO   (1)               // yaw轴电机减速比
 #define PITCH_RATIO (1)               // pitch轴电机减速比
 

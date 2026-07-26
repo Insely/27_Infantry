@@ -18,7 +18,7 @@
 
 #include "cmsis_os2.h"
 
-#define RC_JOYSTICK_MAX 660.0f
+#define RC_JOYSTICK_MAX 784.0f
 #define CHASSIS_MAX_SPEED_X 2.5f              // 底盘x轴最大物理速度  m/s
 #define CHASSIS_MAX_SPEED_Y 2.5f              // 底盘y轴最大物理速度  m/s
 static uint32_t mouse_l_press_start_time = 0; // 记录按下的起始时间戳
@@ -28,6 +28,19 @@ static uint8_t look_aside_state = 0;          // X键侧视状态 0:正常 1:+90° 2:+2
 static float look_aside_saved_yaw = 0;        // 侧视前保存的yaw角度
 
 RC_ctrl_t RC_data; // 遥控器数据（从 Chassis_helm.c 移至此处）
+
+static float RC_JoystickToPitchAngle(float joystick)
+{
+    if (joystick > RC_JOYSTICK_MAX)
+        joystick = RC_JOYSTICK_MAX;
+    if (joystick < -RC_JOYSTICK_MAX)
+        joystick = -RC_JOYSTICK_MAX;
+
+    if (joystick >= 0.0f)
+        return joystick * PITCHI_MAX_ANGLE / RC_JOYSTICK_MAX;
+
+    return joystick * (-PITCHI_MIN_ANGLE) / RC_JOYSTICK_MAX;
+}
 
 /*----------------------------------- 按键消抖 --------------------------------------*/
 
@@ -271,8 +284,7 @@ void RC_Controller()
     /*云台控制*/
     if ((Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE || Global.Auto.input.control_mode == 0) && Global.Gimbal.mode == NORMAL)
     {
-        Gimbal_SetPitchAngle(Global.Gimbal.input.pitch + RC_data.rc.ch[3] / 2000.0f);
-        Gimbal_SetYawAngle(Global.Gimbal.input.yaw - RC_data.rc.ch[2] / 1500.0f);
+        Gimbal_SetPitchAngle(RC_JoystickToPitchAngle(RC_data.rc.ch[3]));
     }
     /*自瞄控制*/
     if (RC_data.rc.s[0] == RC_SW_DOWN &&
