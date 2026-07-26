@@ -35,7 +35,7 @@
 
 //模块类型选择
 #define USE_GIMBAL       (1)   // 启用云台
-#define USE_SHOOT        (0)   // 启用发射机构
+#define USE_SHOOT        (1)   // 启用发射机构
 
 //电机类型选择  （0不使用  1使用）
 #define USE_DJIMotor     (1)   // 大疆电机
