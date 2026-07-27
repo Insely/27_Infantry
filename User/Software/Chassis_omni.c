@@ -118,7 +118,7 @@ void Chassis_Init()
     PID_Set(&Chassis.chassis_speed_pid_BL, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_speed_pid_BR, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     /*底盘跟随PID*/
-    PID_Set(&Chassis.chassis_follow_pid, 8.0f, 0.0f, 0.0f, 200, 40);
+    PID_Set(&Chassis.chassis_follow_pid, 5.5f, 0.0f, 1.0f, 200, 40);
     /*底盘力控PID*/
     PID_Set(&Chassis.chassis_T_pid_x, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_T_pid_y, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
@@ -154,7 +154,7 @@ void Chassis_Updater()
     Chassis.speed_now_BR = CHASSISMotor_get_data(WHEEL_BR).speed_rpm / WHEEL_RATIO * RPM_TO_RAD_S;
     // 角度(rad)
     Chassis.chassis_pitch_angle = IMU_data.AHRS.pitch * RAD_TO_DEG;
-    Chassis.chassis_yaw_angle = DMMotor_GetData(YAWMotor).motor_data.para.pos;
+    Chassis.chassis_yaw_angle = DMMotor_GetData(YAWMotor).motor_data.para.angle_cnt;
 
     /*---------------目标量更新----------------*/
     // 车速

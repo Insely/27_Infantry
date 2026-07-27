@@ -35,7 +35,7 @@
 
 //模块类型选择
 #define USE_GIMBAL       (1)   // 启用云台
-#define USE_SHOOT        (0)   // 启用发射机构
+#define USE_SHOOT        (1)   // 启用发射机构
 
 //电机类型选择  （0不使用  1使用）
 #define USE_DJIMotor     (1)   // 大疆电机
@@ -109,12 +109,12 @@
 
 //发射机构物理参数
 #define FRIC_RADIUS 0.03f              // (m)摩擦轮半径
-#define BULLET_NUM 12                  // 拨弹盘容纳弹丸个数
+#define BULLET_NUM 9                  // 拨弹盘容纳弹丸个数
 
 //电机ID
 #define ShootMotor_L  CAN_1_5
 #define ShootMotor_R  CAN_1_7
-#define TRIGGER_MOTOR CAN_3_2
+#define TRIGGER_MOTOR CAN_3_1
 
 //电机种类
 #define TRIGGER_MOTOR_TYPE  ((Motor_Type_e)DJI_M2006)

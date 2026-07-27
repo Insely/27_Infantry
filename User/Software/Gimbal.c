@@ -14,20 +14,18 @@ Gimbal_t Gimbal;
 static char buffer[200];
 static int send_num;
 
-static bool ReadyCheck(float yaw_pos, float pitch_pos)
+static bool ReadyCheck(float yaw_pos)
 {
     static int time;
     static int total_time; // 总计时，用于超时强制通过
 
-    Gimbal.pitch_location_set = pitch_pos * RAD_TO_DEG;
     Gimbal.yaw_location_set = Gimbal.yaw_location_now + (yaw_pos - GIMBALMotor_get_data(YAWMotor).motor_data.para.pos) * RAD_TO_DEG;
 
     float d_yaw = fabsf(GIMBALMotor_get_data(YAWMotor).motor_data.para.pos - yaw_pos);
-    float d_pitch = fabsf(Gimbal.pitch_location_now * DEG_TO_RAD - pitch_pos);
 
     total_time++;
 
-    if (d_yaw < 0.1 && d_pitch < 0.1)
+    if (d_yaw < 0.1)
         time++;
     else
         time = 0;
@@ -187,7 +185,7 @@ void Gimbal_Tasks(void)
     if (Gimbal.State != NORMALLY)
     {
         // 上电纠偏阶段：驱动云台回到零位
-        if (ReadyCheck(0, 0))
+        if (ReadyCheck(0))
         {
             Gimbal.State = NORMALLY;
             // 同步全局输入为当前位置，防止切换到正常控制时跳变

@@ -77,10 +77,10 @@ else {
         case READY:
             Shoot.shoot_speed_set = SHOOT_SPEED_READY;
             // 达速检测
-            if ((abs(Shoot.shoot_speed_L_now - SHOOT_SPEED_READY) < 300) &&
-                (abs(Shoot.shoot_speed_R_now - SHOOT_SPEED_READY) < 300)) {
+            // if ((abs(Shoot.shoot_speed_L_now - SHOOT_SPEED_READY) < 300) &&
+            //     (abs(Shoot.shoot_speed_R_now - SHOOT_SPEED_READY) < 300)) {
                 Global.Shoot.shoot_status = OK;
-            }
+            //}
             break;
         case DEBUG_SHOOT:
             Shoot.shoot_speed_set = SHOOT_SPEED_BEGIN;
@@ -131,16 +131,16 @@ else {
  */
 void Shoot_Calculater()
 {
-	// 热量控制
- 	 if (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 50)  && Shoot.trigger_speed_set != TRIGGER_SPEED_CLOSE) // 150
-	{
-		if (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 100)) // 100
-			Shoot.trigger_speed_set = TRIGGER_SPEED_MID;
-		else if ((Referee_data.Barrel_Heat_17mm > (Referee_data.Heat_Limit - 100)) && (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 90))) // 80--110
-			Shoot.trigger_speed_set = TRIGGER_SPEED_LOW;
-	}
-	else
-		Shoot.trigger_speed_set = TRIGGER_SPEED_CLOSE;  
+	// // 热量控制
+ 	//  if (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 50)  && Shoot.trigger_speed_set != TRIGGER_SPEED_CLOSE) // 150
+	// {
+	// 	if (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 100)) // 100
+	// 		Shoot.trigger_speed_set = TRIGGER_SPEED_MID;
+	// 	else if ((Referee_data.Barrel_Heat_17mm > (Referee_data.Heat_Limit - 100)) && (Referee_data.Barrel_Heat_17mm < (Referee_data.Heat_Limit - 90))) // 80--110
+	// 		Shoot.trigger_speed_set = TRIGGER_SPEED_LOW;
+	// }
+	// else
+	// 	Shoot.trigger_speed_set = TRIGGER_SPEED_CLOSE;  
 
 	// 卡弹处理
 	static int trigger_kill_cnt = 0; // 卡弹回退次数
