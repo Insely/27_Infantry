@@ -24,10 +24,6 @@ void Shoot_Init()
 	// 拨弹电机初始化
 	TriggerMotor_init(DJI_M2006, TRIGGER_MOTOR);
 
-	// 摩擦轮电机
-	PID_Set(&Shoot.shoot_L_speed_pid, 10, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
-	PID_Set(&Shoot.shoot_R_speed_pid, 10, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
-
 	// 拨弹电机
 	PID_Set(&Shoot.trigger_speed_pid, 5, 0, 3, SHOOTMOTOR_MAX_CURRENT, 0);
 	PID_Set(&Shoot.trigger_location_pid, 5, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
@@ -48,8 +44,6 @@ void Shoot_Updater()
 {
 	/*------状态量更新------*/
 	//速度
-	Shoot.shoot_speed_L_now = (SHOOTMotor_get_data(ShootMotor_L).speed_rpm);
-	Shoot.shoot_speed_R_now = (SHOOTMotor_get_data(ShootMotor_R).speed_rpm);
 	Shoot.trigger_speed_now = (TriggerMotor_get_data(TRIGGER_MOTOR).speed_rpm);
 	//电流
 	Shoot.trigger_current_now = (TriggerMotor_get_data(TRIGGER_MOTOR).given_current);
@@ -160,8 +154,6 @@ void Shoot_Calculater()
 		    Shoot.trigger_speed_set = speed_set_from_pos;
 	    }
 	}
-	Shoot.current[0] = PID_Cal(&Shoot.shoot_L_speed_pid, Shoot.shoot_speed_L_now, Shoot.shoot_speed_set);
-	Shoot.current[1] = PID_Cal(&Shoot.shoot_R_speed_pid, Shoot.shoot_speed_R_now, -Shoot.shoot_speed_set);  
 	Shoot.current[2] = PID_Cal(&Shoot.trigger_speed_pid, Shoot.trigger_speed_now, Shoot.trigger_speed_set);
 }
 
@@ -175,8 +167,6 @@ void Shoot_Calculater()
  */
 void Shoot_Controller()
 {
-	SHOOTMotor_set(Shoot.current[0],ShootMotor_L);
-	SHOOTMotor_set(Shoot.current[1],ShootMotor_R);
 	SHOOTMotor_set(Shoot.current[2],TRIGGER_MOTOR);
 }
 

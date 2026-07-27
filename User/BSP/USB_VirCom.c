@@ -27,21 +27,19 @@
 
 void Vircom_Send(uint8_t data[], uint16_t len)
 {
-  if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送
-  {
-    // USB忙碌数据转入缓冲区
+  // if (CDC_Transmit_HS(data, len) == 1) // 判断数据是否发送
+  // {
+  //   // USB忙碌数据转入缓冲区
 
-    fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
-  }
+  //   fifo_s_puts(&USB_send_fifo, (char *)data, (int)len);
+  // }
+  CDC_Transmit_HS(data, len);
+
 }
 
 void Vircom_Rev(uint8_t data[], uint16_t len)
 {
-  // if(data[0]==0xA5){
-  //   Global.Auto.input.Auto_control_online=100;
-  //   decodeMINIPCdata(&fromMINIPC,data,len);
-  //   MINIPC_to_STM32();
-  // }
+
 }
 
 #include "stdio.h"

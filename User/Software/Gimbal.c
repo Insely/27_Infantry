@@ -2,6 +2,7 @@
 #include "Global_status.h"
 #include "remote_control.h"
 #include "Auto_control.h"
+#include "Vofa_Justfloat_Send.h"
 
 #include "User_math.h"
 
@@ -11,8 +12,6 @@
 #include "Chassis_omni.h"
 
 Gimbal_t Gimbal;
-static char buffer[200];
-static int send_num;
 
 static bool ReadyCheck(float yaw_pos)
 {
@@ -200,6 +199,18 @@ void Gimbal_Tasks(void)
         // 正常控制
         Gimbal_Calculater();
         Gimbal_Controller();
+    }
+
+    //Vofa+打印数据
+    static uint16_t vofa_cnt = 0;
+    float vofa_gimbal_data[2] = {0.0f, 0.0f};
+
+    if (++vofa_cnt >= 10)
+    {
+        vofa_cnt = 0;
+        vofa_gimbal_data[0] = Gimbal.yaw_location_now;
+        vofa_gimbal_data[1] = Gimbal.yaw_location_set;
+        Vofa_SendFloat(vofa_gimbal_data, 2);
     }
 #endif
 }
