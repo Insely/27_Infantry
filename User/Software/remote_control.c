@@ -18,7 +18,7 @@
 
 #include "cmsis_os2.h"
 
-#define RC_JOYSTICK_MAX 784.0f
+#define RC_JOYSTICK_MAX 660.0f
 #define CHASSIS_MAX_SPEED_X 2.5f              // 底盘x轴最大物理速度  m/s
 #define CHASSIS_MAX_SPEED_Y 2.5f              // 底盘y轴最大物理速度  m/s
 static uint32_t mouse_l_press_start_time = 0; // 记录按下的起始时间戳
@@ -83,10 +83,10 @@ void SetWait(uint8_t key)
 void DT7toRCdata()
 {
     /*遥控器数据*/
-    RC_data.rc.ch[0] = DT7_data.rc.ch[0];
-    RC_data.rc.ch[1] = DT7_data.rc.ch[1];
-    RC_data.rc.ch[2] = DT7_data.rc.ch[2];
-    RC_data.rc.ch[3] = DT7_data.rc.ch[3];
+    RC_data.rc.ch[0] = -DT7_data.rc.ch[2];
+    RC_data.rc.ch[1] = -DT7_data.rc.ch[3];
+    RC_data.rc.ch[2] = DT7_data.rc.ch[0];
+    RC_data.rc.ch[3] = DT7_data.rc.ch[1];
     RC_data.rc.ch[4] = DT7_data.rc.ch[4];
     RC_data.rc.s[0] = DT7_data.rc.s[0];
     RC_data.rc.s[1] = DT7_data.rc.s[1];
@@ -218,12 +218,12 @@ void FSI6XtoRCdata()
  */
 void RCdata_Updater()
 {
-    // if (DT7_data.online >= 0)
-    //   DT7toRCdata();
-    // else if (FSI6X_data.online >= 0)
-    FSI6XtoRCdata();
-    // else if (VT13_data.online >= 0)
-    //   VT13toRCdata();
+    if (DT7_data.online >= 0)
+        DT7toRCdata();
+    else if (FSI6X_data.online >= 0)
+        FSI6XtoRCdata();
+    else if (VT13_data.online >= 0)
+        VT13toRCdata();
 }
 
 /*----------------------------------- 遥控器控制逻辑 --------------------------------------*/
@@ -284,7 +284,7 @@ void RC_Controller()
     /*云台控制*/
     if ((Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE || Global.Auto.input.control_mode == 0) && Global.Gimbal.mode == NORMAL)
     {
-        Gimbal_SetPitchAngle(RC_JoystickToPitchAngle(RC_data.rc.ch[3]));
+        Gimbal_SetPitchAngle(Global.Gimbal.input.pitch + RC_data.rc.ch[3] / 2000.0f);
     }
     /*自瞄控制*/
     if (RC_data.rc.s[0] == RC_SW_DOWN &&
@@ -366,8 +366,6 @@ void Keyboard_MouseController(void)
         Global.Cap.mode = Not_FULL;
         // Global.Cap.speed = 1.5f;
     }
-
-
 
     if (IF_KEY_PRESSED_Q || Wait(WAIT_Q)) // 小陀螺开关
     {
