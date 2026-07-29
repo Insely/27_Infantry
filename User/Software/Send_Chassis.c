@@ -58,6 +58,11 @@ static void Pack_RC_s_data(uint8_t data[8])
     int_to_bytes(RC_data.online, &data[2]);
 }
 
+static void Pack_RC_key_data(uint8_t data[8])
+{
+    uint16_to_bytes(RC_data.key.v, &data[0]);
+}
+
 static void Pack_TRIGGER_MODE(uint8_t data[8])
 {
     float_to_bytes(Global.Shoot.trigger_mode,  &data[0]);    
@@ -78,6 +83,7 @@ static const CanTxEntry_t ChassisTxTable[] = {
     { CAN_ID_CHASSIS_RC_CH,        Pack_RC_ch_data_0_3,     2, 0 },
     { CAN_ID_CHASSIS_RC_CH_4,      Pack_RC_ch_data_4,     2, 1 },
     { CAN_ID_CHASSIS_RC_S,         Pack_RC_s_data,      5, 1 },
+    { CAN_ID_CHASSIS_RC_KEY,       Pack_RC_key_data,    2, 1 },
     /* 200Hz yaw控制附加数据: 速度前馈 + 扫描速度 */
 };
 
@@ -90,9 +96,11 @@ void Chassis_CAN_SendAll(void)
     static enum chassis_mode_e last_chassis_mode = FLOW;
     static uint8_t last_rc_s0 = 0;
     static uint8_t last_rc_s1 = 0;
+    static uint16_t last_rc_key_v = 0;
     static uint8_t trigger_mode_fast_resend = 0;
     static uint8_t mode_fast_resend = 0;
     static uint8_t rc_s_fast_resend = 0;
+    static uint8_t rc_key_fast_resend = 0;
     uint8_t buf[8];
 
     if (Global.Shoot.trigger_mode != last_trigger_mode)
@@ -115,6 +123,12 @@ void Chassis_CAN_SendAll(void)
         rc_s_fast_resend = 5; /* Resend switch changes at 1kHz for 5ms. */
     }
 
+    if (RC_data.key.v != last_rc_key_v)
+    {
+        last_rc_key_v = RC_data.key.v;
+        rc_key_fast_resend = 5; /* Resend key changes at 1kHz for 5ms. */
+    }
+
     for (uint8_t i = 0; i < sizeof(ChassisTxTable)/sizeof(ChassisTxTable[0]); i++) {
         uint8_t should_send = (tick % ChassisTxTable[i].divider == ChassisTxTable[i].phase);
 
@@ -125,6 +139,9 @@ void Chassis_CAN_SendAll(void)
             should_send = 1;
         }
         if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_S && rc_s_fast_resend > 0) {
+            should_send = 1;
+        }
+        if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_KEY && rc_key_fast_resend > 0) {
             should_send = 1;
         }
 
@@ -140,6 +157,9 @@ void Chassis_CAN_SendAll(void)
                 }
                 if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_S && rc_s_fast_resend > 0) {
                     rc_s_fast_resend--;
+                }
+                if (ChassisTxTable[i].id == CAN_ID_CHASSIS_RC_KEY && rc_key_fast_resend > 0) {
+                    rc_key_fast_resend--;
                 }
             }
         }

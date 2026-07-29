@@ -66,4 +66,44 @@ void Remote_Tasks(void);
 extern RC_ctrl_t RC_data;
 
 
+/* ----------------------- PC Key Definition-------------------------------- */
+#ifndef KEY_PRESSED_OFFSET_W
+#define KEY_PRESSED_OFFSET_W            ((uint16_t)1 << 0)
+#define KEY_PRESSED_OFFSET_S            ((uint16_t)1 << 1)
+#define KEY_PRESSED_OFFSET_A            ((uint16_t)1 << 2)
+#define KEY_PRESSED_OFFSET_D            ((uint16_t)1 << 3)
+#define KEY_PRESSED_OFFSET_SHIFT        ((uint16_t)1 << 4)
+#define KEY_PRESSED_OFFSET_CTRL         ((uint16_t)1 << 5)
+#define KEY_PRESSED_OFFSET_Q            ((uint16_t)1 << 6)
+#define KEY_PRESSED_OFFSET_E            ((uint16_t)1 << 7)
+#define KEY_PRESSED_OFFSET_R            ((uint16_t)1 << 8)
+#define KEY_PRESSED_OFFSET_F            ((uint16_t)1 << 9)
+#define KEY_PRESSED_OFFSET_G            ((uint16_t)1 << 10)
+#define KEY_PRESSED_OFFSET_Z            ((uint16_t)1 << 11)
+#define KEY_PRESSED_OFFSET_X            ((uint16_t)1 << 12)
+#define KEY_PRESSED_OFFSET_C            ((uint16_t)1 << 13)
+#define KEY_PRESSED_OFFSET_V            ((uint16_t)1 << 14)
+#define KEY_PRESSED_OFFSET_B            ((uint16_t)1 << 15)
+#endif
+
+#ifndef IF_KEY_PRESSED
+#define IF_KEY_PRESSED         (  RC_data.key.v  )
+#define IF_KEY_PRESSED_W       ( (RC_data.key.v & KEY_PRESSED_OFFSET_W)     != 0 )
+#define IF_KEY_PRESSED_S       ( (RC_data.key.v & KEY_PRESSED_OFFSET_S)     != 0 )
+#define IF_KEY_PRESSED_A       ( (RC_data.key.v & KEY_PRESSED_OFFSET_A)     != 0 )
+#define IF_KEY_PRESSED_D       ( (RC_data.key.v & KEY_PRESSED_OFFSET_D)     != 0 )
+#define IF_KEY_PRESSED_Q       ( (RC_data.key.v & KEY_PRESSED_OFFSET_Q)     != 0 )
+#define IF_KEY_PRESSED_E       ( (RC_data.key.v & KEY_PRESSED_OFFSET_E)     != 0 )
+#define IF_KEY_PRESSED_G       ( (RC_data.key.v & KEY_PRESSED_OFFSET_G)     != 0 )
+#define IF_KEY_PRESSED_X       ( (RC_data.key.v & KEY_PRESSED_OFFSET_X)     != 0 )
+#define IF_KEY_PRESSED_Z       ( (RC_data.key.v & KEY_PRESSED_OFFSET_Z)     != 0 )
+#define IF_KEY_PRESSED_C       ( (RC_data.key.v & KEY_PRESSED_OFFSET_C)     != 0 )
+#define IF_KEY_PRESSED_B       ( (RC_data.key.v & KEY_PRESSED_OFFSET_B)     != 0 )
+#define IF_KEY_PRESSED_V       ( (RC_data.key.v & KEY_PRESSED_OFFSET_V)     != 0 )
+#define IF_KEY_PRESSED_F       ( (RC_data.key.v & KEY_PRESSED_OFFSET_F)     != 0 )
+#define IF_KEY_PRESSED_R       ( (RC_data.key.v & KEY_PRESSED_OFFSET_R)     != 0 )
+#define IF_KEY_PRESSED_CTRL    ( (RC_data.key.v & KEY_PRESSED_OFFSET_CTRL)  != 0 )
+#define IF_KEY_PRESSED_SHIFT   ( (RC_data.key.v & KEY_PRESSED_OFFSET_SHIFT) != 0 )
+#endif
+
 #endif // !__REMOTE_CONTROL__

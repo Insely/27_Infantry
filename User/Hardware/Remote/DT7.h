@@ -22,6 +22,7 @@
 #define switch_is_mid(a)        (RC_data.rc.s[a] == RC_SW_MID)
 #define switch_is_up(a)         (RC_data.rc.s[a] == RC_SW_UP)
 /* ----------------------- PC Key Definition-------------------------------- */
+#ifndef KEY_PRESSED_OFFSET_W
 #define KEY_PRESSED_OFFSET_W            ((uint16_t)1 << 0)
 #define KEY_PRESSED_OFFSET_S            ((uint16_t)1 << 1)
 #define KEY_PRESSED_OFFSET_A            ((uint16_t)1 << 2)
@@ -39,6 +40,9 @@
 #define KEY_PRESSED_OFFSET_V            ((uint16_t)1 << 14)
 #define KEY_PRESSED_OFFSET_B            ((uint16_t)1 << 15)
 
+#endif
+
+#ifndef IF_KEY_PRESSED
 #define    IF_KEY_PRESSED         (  RC_data.key.v  )
 #define    IF_KEY_PRESSED_W       ( (RC_data.key.v & KEY_PRESSED_OFFSET_W)    != 0 )
 #define    IF_KEY_PRESSED_S       ( (RC_data.key.v & KEY_PRESSED_OFFSET_S)    != 0 )
@@ -56,6 +60,8 @@
 #define    IF_KEY_PRESSED_R       ( (RC_data.key.v & KEY_PRESSED_OFFSET_R)    != 0 )
 #define    IF_KEY_PRESSED_CTRL    ( (RC_data.key.v & KEY_PRESSED_OFFSET_CTRL) != 0 )
 #define    IF_KEY_PRESSED_SHIFT   ( (RC_data.key.v & KEY_PRESSED_OFFSET_SHIFT) != 0 )
+
+#endif
 
 /* 获取鼠标三轴的移动速度 */
 #define    MOUSE_X_MOVE_SPEED    (RC_data.mouse.x)
