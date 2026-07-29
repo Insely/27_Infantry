@@ -12,6 +12,7 @@
 #define CAN_ID_CHASSIS_RC_CH_0_3         0x106
 #define CAN_ID_CHASSIS_RC_CH_4       0x107
 #define CAN_ID_CHASSIS_RC_S          0x108
+#define CAN_ID_CHASSIS_RC_KEY        0x109
 
 uint8_t Gimbal_CAN_Dispatch(uint16_t id, uint8_t data[8]);
 
