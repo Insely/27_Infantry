@@ -13,6 +13,8 @@
 #define CAN_ID_CHASSIS_RC_CH_4       0x107
 #define CAN_ID_CHASSIS_RC_S          0x108
 #define CAN_ID_CHASSIS_RC_KEY        0x109
+#define CAN_ID_CHASSIS_RC_MOUSE_MOVE 0x10A
+#define CAN_ID_CHASSIS_RC_MOUSE_PRESS 0x10B
 
 uint8_t Gimbal_CAN_Dispatch(uint16_t id, uint8_t data[8]);
 

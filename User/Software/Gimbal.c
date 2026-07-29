@@ -15,6 +15,25 @@
 Gimbal_t Gimbal;
 
 
+static bool ReadyCheck(float yaw_pos)
+{
+    static int time;
+    static int total_time; // 总计时，用于超时强制通过
+
+    float d_yaw = fabsf(GIMBALMotor_get_data(YAWMotor).motor_data.para.pos - yaw_pos);
+
+    total_time++;
+
+    if (d_yaw < 0.1)
+        time++;
+    else
+        time = 0;
+    if (time < 100 && total_time < 3000) // 最多等3秒，超时强制通过
+        return false;
+    else
+        return true;
+}
+
 /*-------------------- Init --------------------*/
 
 /**
@@ -229,21 +248,3 @@ void Gimbal_SetYawAngle(float angle)
     Global.Gimbal.input.yaw = angle;
 }
 
-static bool ReadyCheck(float yaw_pos)
-{
-    static int time;
-    static int total_time; // 总计时，用于超时强制通过
-
-    float d_yaw = fabsf(GIMBALMotor_get_data(YAWMotor).motor_data.para.pos - yaw_pos);
-
-    total_time++;
-
-    if (d_yaw < 0.1)
-        time++;
-    else
-        time = 0;
-    if (time < 100 && total_time < 3000) // 最多等3秒，超时强制通过
-        return false;
-    else
-        return true;
-}

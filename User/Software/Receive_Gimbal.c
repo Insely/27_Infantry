@@ -16,6 +16,8 @@
     7. CAN_ID_CHASSIS_RC_CH_4: 遥控器通道4数据
     8. CAN_ID_CHASSIS_RC_S: 遥控器拨杆数据
     9. CAN_ID_CHASSIS_RC_KEY: remote control key bitmap
+    10. CAN_ID_CHASSIS_RC_MOUSE_MOVE: remote control mouse x/y/z
+    11. CAN_ID_CHASSIS_RC_MOUSE_PRESS: remote control mouse buttons
 */
 typedef void (*CanRxHandler_t)(uint8_t data[8]);
 
@@ -78,6 +80,20 @@ static void Receive_RC_key_data(uint8_t data[8])
     RC_data.key.v = bytes_to_uint16(&data[0]);
 }
 
+static void Receive_RC_mouse_move_data(uint8_t data[8])
+{
+    RC_data.mouse.x = (int16_t)bytes_to_uint16(&data[0]);
+    RC_data.mouse.y = (int16_t)bytes_to_uint16(&data[2]);
+    RC_data.mouse.z = (int16_t)bytes_to_uint16(&data[4]);
+}
+
+static void Receive_RC_mouse_press_data(uint8_t data[8])
+{
+    RC_data.mouse.press_l = bytes_to_uint8(&data[0]);
+    RC_data.mouse.press_r = bytes_to_uint8(&data[1]);
+    RC_data.mouse.press_mid = bytes_to_uint8(&data[2]);
+}
+
 static const CanRxEntry_t GimbalRxTable[] = {
     { CAN_ID_CHASSIS_MODE,         Receive_Control_Mode },
     { CAN_ID_CHASSIS_IMU_ATTITUDE, Receive_IMU_Attitude },
@@ -88,6 +104,8 @@ static const CanRxEntry_t GimbalRxTable[] = {
     { CAN_ID_CHASSIS_RC_CH_4,      Receive_RC_ch_4_data   },
     { CAN_ID_CHASSIS_RC_S,         Receive_RC_s_data    },
     { CAN_ID_CHASSIS_RC_KEY,       Receive_RC_key_data    },
+    { CAN_ID_CHASSIS_RC_MOUSE_MOVE, Receive_RC_mouse_move_data },
+    { CAN_ID_CHASSIS_RC_MOUSE_PRESS, Receive_RC_mouse_press_data },
 };
 
 uint8_t Gimbal_CAN_Dispatch(uint16_t id, uint8_t data[8])
