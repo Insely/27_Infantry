@@ -33,6 +33,8 @@ extern void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan);
 #define CAN_ID_CHASSIS_RC_CH_4       0x107
 #define CAN_ID_CHASSIS_RC_S          0x108
 #define CAN_ID_CHASSIS_RC_KEY        0x109
+#define CAN_ID_CHASSIS_RC_MOUSE_MOVE 0x10A
+#define CAN_ID_CHASSIS_RC_MOUSE_PRESS 0x10B
 #define CAN_ID_REFEREE_DATA_1        0x091
 #define CAN_ID_REFEREE_DATA_2        0x092
 #define CAN_ID_REFEREE_DATA_3        0x093
