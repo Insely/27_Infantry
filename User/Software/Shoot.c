@@ -4,6 +4,7 @@
 #include "referee_system.h"
 #include "Stm32_time.h"
 #include "User_math.h"
+#include "Vofa_Justfloat_Send.h"
 
 Shoot_t Shoot;
 static double trigger_angle_target = 0;   //目标总角度
@@ -25,7 +26,7 @@ void Shoot_Init()
 	TriggerMotor_init(DJI_M2006, TRIGGER_MOTOR);
 
 	// 摩擦轮电机
-	PID_Set(&Shoot.shoot_L_speed_pid, 10, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
+	PID_Set(&Shoot.shoot_L_speed_pid, 9.8, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
 	PID_Set(&Shoot.shoot_R_speed_pid, 10, 0, 0, SHOOTMOTOR_MAX_CURRENT, 0);
 
 	// 拨弹电机
@@ -178,6 +179,12 @@ void Shoot_Controller()
 	SHOOTMotor_set(Shoot.current[0],ShootMotor_L);
 	SHOOTMotor_set(Shoot.current[1],ShootMotor_R);
 	SHOOTMotor_set(Shoot.current[2],TRIGGER_MOTOR);
+
+	float vofa_send_data[2] = {0.0f, 0.0f, 0.0f};
+	vofa_send_data[0] = Shoot.shoot_speed_L_now;
+	vofa_send_data[1] = -Shoot.shoot_speed_R_now;
+	Vofa_SendFloat(vofa_send_data, 3);
+
 }
 
 
