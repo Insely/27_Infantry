@@ -4,6 +4,7 @@
 #include "Auto_control.h"
 #include "Vofa_Justfloat_Send.h"
 
+#include "cmsis_os2.h"
 #include "User_math.h"
 
 #include "IMU_updata.h"
@@ -13,26 +14,7 @@
 
 Gimbal_t Gimbal;
 
-static bool ReadyCheck(float yaw_pos)
-{
-    static int time;
-    static int total_time; // 总计时，用于超时强制通过
 
-    Gimbal.yaw_location_set = Gimbal.yaw_location_now + (yaw_pos - GIMBALMotor_get_data(YAWMotor).motor_data.para.pos) * RAD_TO_DEG;
-
-    float d_yaw = fabsf(GIMBALMotor_get_data(YAWMotor).motor_data.para.pos - yaw_pos);
-
-    total_time++;
-
-    if (d_yaw < 0.1)
-        time++;
-    else
-        time = 0;
-    if (time < 100 && total_time < 3000) // 最多等3秒，超时强制通过
-        return false;
-    else
-        return true;
-}
 /*-------------------- Init --------------------*/
 
 /**
@@ -106,14 +88,19 @@ void Gimbal_Updater()
  * @param          none
  * @retval         none
  */
-#define PITCH_VEL_FF_GAIN (0.65f)  // pitch速度前馈增益: 1.0=直接跟随目标pitch角速度，单位匹配时取小
-#define PITCH_ACC_FF_GAIN (0.013f) // pitch加速度前馈增益 增大可更快跟上但易超
-#define PITCH_VEL_FF_LIMIT (0.20f)
-#define PITCH_ACC_FF_LIMIT (0.15f)
-#define PITCH_FF_TOTAL_LIMIT (0.30f)
 
 void Gimbal_Calculater()
 {
+    static enum control_mode_e last_control_mode = LOCK;
+
+    if (last_control_mode == LOCK && Global.Control.mode != LOCK)
+    {
+        Global.Gimbal.input.yaw = Gimbal.yaw_location_now;
+        Gimbal.yaw_location_set = Gimbal.yaw_location_now;
+    }
+
+    last_control_mode = Global.Control.mode;
+
     static uint8_t last_auto_active = 0;
     if ((Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE || Global.Auto.input.control_mode == 0) && (Global.Gimbal.mode == NORMAL || Global.Gimbal.mode == SHOOT))
     {
@@ -125,7 +112,6 @@ void Gimbal_Calculater()
         }
         last_auto_active = 0;
 
-        //
         Gimbal.yaw_speed_set = PID_Cal(&Gimbal.yaw_location_pid, Gimbal.yaw_location_now, Gimbal.yaw_location_set) * DEG_TO_RAD - IMU_data.gyro[2];
 
         if (Global.Auto.input.Auto_control_online > 0)
@@ -192,7 +178,7 @@ void Gimbal_Tasks(void)
         }
         Gimbal_Calculater();
         // 纠偏阶段强制输出，不受 LOCK 模式影响
-        GIMBALMotor_set(YAWMotor, 0, Gimbal.yaw_speed_set, 0, 0, 0.5f);
+        GIMBALMotor_set(YAWMotor, 0.0f, 0.0f, 1.0f, 4.0f, 0.5f);
     }
     else
     {
@@ -201,16 +187,19 @@ void Gimbal_Tasks(void)
         Gimbal_Controller();
     }
 
-    //Vofa+打印数据
+    // Vofa+打印数据
     static uint16_t vofa_cnt = 0;
-    float vofa_gimbal_data[2] = {0.0f, 0.0f};
+    float vofa_gimbal_data[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
     if (++vofa_cnt >= 10)
     {
         vofa_cnt = 0;
         vofa_gimbal_data[0] = Gimbal.yaw_location_now;
         vofa_gimbal_data[1] = Gimbal.yaw_location_set;
-        Vofa_SendFloat(vofa_gimbal_data, 2);
+        vofa_gimbal_data[2] = Gimbal.yaw_speed_now;
+        vofa_gimbal_data[3] = Gimbal.yaw_speed_set;
+        vofa_gimbal_data[4] = GIMBALMotor_get_data(YAWMotor).motor_data.para.pos * RAD_TO_DEG;
+        Vofa_SendFloat(vofa_gimbal_data, 5);
     }
 #endif
 }
@@ -238,4 +227,23 @@ void Gimbal_SetPitchAngle(float angle)
 void Gimbal_SetYawAngle(float angle)
 {
     Global.Gimbal.input.yaw = angle;
+}
+
+static bool ReadyCheck(float yaw_pos)
+{
+    static int time;
+    static int total_time; // 总计时，用于超时强制通过
+
+    float d_yaw = fabsf(GIMBALMotor_get_data(YAWMotor).motor_data.para.pos - yaw_pos);
+
+    total_time++;
+
+    if (d_yaw < 0.1)
+        time++;
+    else
+        time = 0;
+    if (time < 100 && total_time < 3000) // 最多等3秒，超时强制通过
+        return false;
+    else
+        return true;
 }

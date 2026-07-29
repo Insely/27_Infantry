@@ -118,7 +118,7 @@ void Chassis_Init()
     PID_Set(&Chassis.chassis_speed_pid_BL, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_speed_pid_BR, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     /*底盘跟随PID*/
-    PID_Set(&Chassis.chassis_follow_pid, 5.5f, 0.0f, 1.0f, 200, 40);
+    PID_Set(&Chassis.chassis_follow_pid, 7.0f, 0.0f, 1.0f, 200, 40);
     /*底盘力控PID*/
     PID_Set(&Chassis.chassis_T_pid_x, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_T_pid_y, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
@@ -129,7 +129,7 @@ void Chassis_Init()
     // 底盘运动斜坡
     RampGenerator_Init(&Chassis.Vx_ramp, CHASSIS_TASK_TIME, 40, 40, 2);
     RampGenerator_Init(&Chassis.Vy_ramp, CHASSIS_TASK_TIME, 40, 40, 4);
-    RampGenerator_Init(&Chassis.Vw_ramp, CHASSIS_TASK_TIME, 300, 300, 4);
+    RampGenerator_Init(&Chassis.Vw_ramp, CHASSIS_TASK_TIME, 300, 400, 4);
 
     // 默认底盘不跟随模式
     Global.Chassis.mode = FLOW;
@@ -154,7 +154,7 @@ void Chassis_Updater()
     Chassis.speed_now_BR = CHASSISMotor_get_data(WHEEL_BR).speed_rpm / WHEEL_RATIO * RPM_TO_RAD_S;
     // 角度(rad)
     Chassis.chassis_pitch_angle = IMU_data.AHRS.pitch * RAD_TO_DEG;
-    Chassis.chassis_yaw_angle = DMMotor_GetData(YAWMotor).motor_data.para.angle_cnt;
+    Chassis.chassis_yaw_angle = DMMotor_GetData(YAWMotor).motor_data.para.pos;
 
     /*---------------目标量更新----------------*/
     // 车速
