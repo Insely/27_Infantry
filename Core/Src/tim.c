@@ -262,7 +262,7 @@ void MX_TIM13_Init(void)
   htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim13.Init.Period = 100-1;
   htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
   {
     Error_Handler();

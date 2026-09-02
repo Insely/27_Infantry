@@ -357,14 +357,14 @@ void Referee_Task(void *argument)
 {
   /* USER CODE BEGIN Referee_Task */
   Refree_system_init();
-  // µÈ´ı²ÃÅĞÏµÍ³ÉÏÏß£¬»ñÈ¡ÕıÈ·µÄrobot_id
+  // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½È¡ï¿½ï¿½È·ï¿½ï¿½robot_id
   while(Referee_data.robot_id == 0) {
     Referee_unpack_fifo_data(&referee_fifo, &referee_unpack_obj);
     osDelay(100);
   }
   ui_self_id = Referee_data.robot_id;
   ui_init_helm();
-  osDelay(200); // µÈ´ı²ÃÅĞÏµÍ³´¦ÀíADDÖ¡
+  osDelay(200); // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ADDÖ¡
   /* Infinite loop */
   int reinit_cnt = 0;
   for(;;)
@@ -381,7 +381,7 @@ void Referee_Task(void *argument)
     Chassisui_change(0);
     #endif
     Autoui_change();
-    // Ã¿10ÃëÖØĞÂ·¢ËÍÒ»´ÎADD£¬·ÀÖ¹Í¼ĞÎ¶ªÊ§
+    // Ã¿10ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ADDï¿½ï¿½ï¿½ï¿½Ö¹Í¼ï¿½Î¶ï¿½Ê§
     reinit_cnt++;
     if (reinit_cnt >= 100) {
       reinit_cnt = 0;
