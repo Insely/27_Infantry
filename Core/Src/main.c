@@ -322,7 +322,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   uint8_t history = 4;
   if (htim->Instance == TIM13) // 1000HZ
   {
-    IMU_MatchData(&dm_imu_gimbal); // ´ïÃîÍâÖÃÍÓÂÝÒÇ£¨ÔÆÌ¨×ÔÃé£©
+    IMU_Updata();
   }
   else if (htim->Instance == TIM14) // 200Hz
   {

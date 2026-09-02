@@ -333,13 +333,13 @@ void Keyboard_MouseController(void)
 #endif
     /*底盘控制*/
     if (IF_KEY_PRESSED_W)
-        Chassis_SetY(5.0f);
+        Chassis_SetY(2.5f);
     if (IF_KEY_PRESSED_S)
-        Chassis_SetY(-5.0f);
+        Chassis_SetY(-2.5f);
     if (IF_KEY_PRESSED_D)
-        Chassis_SetX(5.0f);
+        Chassis_SetX(2.5f);
     if (IF_KEY_PRESSED_A)
-        Chassis_SetX(-5.0f);
+        Chassis_SetX(-2.5f);
     if (!IF_KEY_PRESSED_W && !IF_KEY_PRESSED_S)
         Chassis_SetY(0);
     if (!IF_KEY_PRESSED_A && !IF_KEY_PRESSED_D)
@@ -371,6 +371,26 @@ void Keyboard_MouseController(void)
     if (IF_KEY_PRESSED_Z) // UI开关
     {
         ui_init_helm();
+    }
+
+        if (IF_KEY_PRESSED_X || Wait(WAIT_X)) // 装弹键
+    {
+        if (Wait(WAIT_X))
+        {
+            switch (look_aside_state)
+            {
+            case 0:
+                Global.Chassis.mode = NO_FOLLOW;
+                look_aside_state = 1;
+                break;
+            case 1:
+                Global.Chassis.mode = FLOW;
+                look_aside_state = 0;
+                break;
+            }
+        }
+        if (IF_KEY_PRESSED_X)
+            SetWait(WAIT_X);
     }
 
     /*自瞄射击模式*/

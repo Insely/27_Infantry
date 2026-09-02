@@ -14,7 +14,6 @@
 
 Gimbal_t Gimbal;
 
-
 static bool ReadyCheck(float yaw_pos)
 {
     static int time;
@@ -102,6 +101,9 @@ void Gimbal_Updater()
 
 /*-------------------- Calculate --------------------*/
 
+#define CHASSIS_YAW_FF_K 1.0f
+#define CHASSIS_DECOUPLE_FF_GAIN (1.07f) // 1.0起调；仍回带→加大，过补偿往同向窜→减小
+
 /**
  * @brief          控制量解算
  * @param          none
@@ -111,6 +113,10 @@ void Gimbal_Updater()
 void Gimbal_Calculater()
 {
     static enum control_mode_e last_control_mode = LOCK;
+
+    float chassis_yaw_ff = 0.0f;
+
+    chassis_yaw_ff = Global.Chassis.input.r;
 
     if (last_control_mode == LOCK && Global.Control.mode != LOCK)
     {
@@ -133,6 +139,24 @@ void Gimbal_Calculater()
 
         Gimbal.yaw_speed_set = PID_Cal(&Gimbal.yaw_location_pid, Gimbal.yaw_location_now, Gimbal.yaw_location_set) * DEG_TO_RAD - IMU_data.gyro[2];
 
+        static float spin_ff_filtered = 0;
+        if (Global.Chassis.mode == FLOW)
+        {
+            static float body_gyro_filt = 0;
+            body_gyro_filt += 0.15f * (IMU_data.gyro[2] - body_gyro_filt);
+            Gimbal.yaw_speed_set -= CHASSIS_DECOUPLE_FF_GAIN * body_gyro_filt;
+        }
+        else if (Global.Chassis.mode == SPIN_P || Global.Chassis.mode == SPIN_N)
+        {
+            spin_ff_filtered += 0.28f * (IMU_data.gyro[2] - spin_ff_filtered);
+            Gimbal.yaw_speed_set -= spin_ff_filtered;
+        }
+        else
+        {
+            spin_ff_filtered = 0;
+        }
+
+        
         if (Global.Auto.input.Auto_control_online > 0)
             Global.Auto.input.Auto_control_online--;
     }
@@ -186,25 +210,25 @@ void Gimbal_Tasks(void)
     // 云台数据更新
     Gimbal_Updater();
 
-    if (Gimbal.State != NORMALLY)
-    {
-        // 上电纠偏阶段：驱动云台回到零位
-        if (ReadyCheck(0))
-        {
+    // if (Gimbal.State != NORMALLY)
+    // {
+    //     // 上电纠偏阶段：驱动云台回到零位
+    //     if (ReadyCheck(0))
+    //     {
             Gimbal.State = NORMALLY;
-            // 同步全局输入为当前位置，防止切换到正常控制时跳变
-            Global.Gimbal.input.yaw = Gimbal.yaw_location_now;
-        }
-        Gimbal_Calculater();
-        // 纠偏阶段强制输出，不受 LOCK 模式影响
-        GIMBALMotor_set(YAWMotor, 0.0f, 0.0f, 1.0f, 4.0f, 0.5f);
-    }
-    else
-    {
+    //         // 同步全局输入为当前位置，防止切换到正常控制时跳变
+    //         Global.Gimbal.input.yaw = Gimbal.yaw_location_now;
+    //     }
+    //     // Gimbal_Calculater();
+    //     //  纠偏阶段强制输出，不受 LOCK 模式影响
+    //     GIMBALMotor_set(YAWMotor, 0.0f, 0.0f, 1.0f, 6.0f, 1.0f);
+    // }
+    // else
+    // {
         // 正常控制
         Gimbal_Calculater();
         Gimbal_Controller();
-    }
+    // }
 
     // Vofa+打印数据
     static uint16_t vofa_cnt = 0;
@@ -247,4 +271,3 @@ void Gimbal_SetYawAngle(float angle)
 {
     Global.Gimbal.input.yaw = angle;
 }
-

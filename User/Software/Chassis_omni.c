@@ -118,7 +118,7 @@ void Chassis_Init()
     PID_Set(&Chassis.chassis_speed_pid_BL, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_speed_pid_BR, 10.5f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     /*底盘跟随PID*/
-    PID_Set(&Chassis.chassis_follow_pid, 7.0f, 0.0f, 1.0f, 200, 40);
+    PID_Set(&Chassis.chassis_follow_pid, 10.0f, 0.0f, 1.0f, 200, 40);
     /*底盘力控PID*/
     PID_Set(&Chassis.chassis_T_pid_x, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
     PID_Set(&Chassis.chassis_T_pid_y, 30.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
@@ -129,7 +129,7 @@ void Chassis_Init()
     // 底盘运动斜坡
     RampGenerator_Init(&Chassis.Vx_ramp, CHASSIS_TASK_TIME, 40, 40, 2);
     RampGenerator_Init(&Chassis.Vy_ramp, CHASSIS_TASK_TIME, 40, 40, 4);
-    RampGenerator_Init(&Chassis.Vw_ramp, CHASSIS_TASK_TIME, 300, 400, 4);
+    RampGenerator_Init(&Chassis.Vw_ramp, CHASSIS_TASK_TIME, 300, 300, 4);
 
     // 默认底盘不跟随模式
     Global.Chassis.mode = FLOW;
@@ -172,7 +172,7 @@ void Chassis_Updater()
  * @param          none
  * @retval         none
  */
-#define K -0.04
+#define K (0.01f)
 void Chassis_Calculater()
 {
     // 底盘电机前馈力矩定义
@@ -200,7 +200,7 @@ void Chassis_Calculater()
         float angle = K * Chassis.W_now + Chassis.chassis_yaw_angle;
         Chassis.Vx_set = Vx * cosf(angle) - Vy * sinf(angle);
         Chassis.Vy_set = Vx * sinf(angle) + Vy * cosf(angle);
-        Chassis.W_set = 0;//(Global.Chassis.mode == SPIN_P) ? (60 * RPM_TO_RAD_S) : (-60 * RPM_TO_RAD_S);
+        Chassis.W_set = (Global.Chassis.mode == SPIN_P) ? (60 * RPM_TO_RAD_S) : (-60 * RPM_TO_RAD_S);
     }
     else if (Global.Chassis.mode == NO_FOLLOW)
     {

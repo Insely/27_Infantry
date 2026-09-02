@@ -132,8 +132,8 @@
     "random": "c"
   },
   "files.encoding": "gbk",
-  "makefile.makefilePath": "D:\\RM\\code\\25-EE-code\\Makefile",
-  "makefile.makePath": "D:\\gcc-arm-none-eabi-10.3-2021.10-win32\\Arm-GNU-Toolchian\\arm-none-eabi\\bin",
+  "makefile.makefilePath": "",
+  "makefile.makePath": "",
   "github.copilot.advanced": {
     "debug.overrideCAPIUrl": "https://copilot.637274.xyz",
     "debug.overrideProxyUrl": "https://copilot.637274.xyz",

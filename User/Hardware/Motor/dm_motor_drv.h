@@ -13,7 +13,7 @@
 #define KP_MAX 500.0f
 #define KD_MIN 0.0f
 #define KD_MAX 5.0f
-#define P_MAX 12.56637f
+#define P_MAX 12.5664f
 #define V_MAX 30.0f
 #define T_MAX 10.0f
 
